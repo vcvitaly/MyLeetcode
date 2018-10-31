@@ -19,7 +19,8 @@ public class LongestSubstringWithoutRepeatingCharactersTest {
                 $("pwwkew", 3),
                 $("abcdefgha", 8),
                 $(" ", 1),
-                $("dvdf", 3)
+                $("dvdf", 3),
+                $("dvdfabca123456789", 12)
         );
     }
 

@@ -1,24 +1,31 @@
 package com.github.vcvitaly._3;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class LongestSubstringWithoutRepeatingCharacters {
 
     public int lengthOfLongestSubstring(String s) {
+        if (s.length() == 0 || s.length() == 1) {
+            return s.length();
+        }
+
+        String substring = null;
         int lengthOfLongestSubstring = 0;
-        Set<Character> set = new HashSet<>();
-        for (int i = 0; i < s.length(); i++) {
-            char currentChar = s.charAt(i);
-            boolean contains = !set.add(currentChar);
+        int indexStart = 0;
+        for (int i = 1; i < s.length(); i++) {
+            String symbol = String.valueOf(s.charAt(i));
+            substring = s.substring(indexStart, i);
+            boolean contains = substring.contains(symbol);
             if (contains) {
-                if (set.size() > lengthOfLongestSubstring) {
-                    lengthOfLongestSubstring = set.size();
-                }
-                set = new HashSet<>();
-                set.add(currentChar);
+                int positionOfRepeatingCharWithinSubstr = substring.indexOf(symbol);
+                indexStart += positionOfRepeatingCharWithinSubstr + 1;
+            } else {
+                substring += symbol;
+            }
+
+            if (substring.length() > lengthOfLongestSubstring) {
+                lengthOfLongestSubstring = substring.length();
             }
         }
-        return lengthOfLongestSubstring > set.size() ? lengthOfLongestSubstring : set.size();
+
+        return lengthOfLongestSubstring;
     }
 }
