@@ -2,23 +2,15 @@ package com.github.vcvitaly._268;
 
 public class MissingNumber {
     public int missingNumber(int[] nums) {
-        long l = 0;
+        long arraySum = 0;
+        long fullSequenceSum = 0;
         for (int num : nums) {
-            l += num;
+            arraySum += num;
         }
-        int missingNumber = 0;
-        boolean foundZeroSequence = false;
-        for (int i = 0; i < 32; i++) {
-            long bit = (l >> i) & 1;
-            if (bit == 0) {
-                foundZeroSequence = true;
-                missingNumber += 1 << i;
-            } else {
-                if (foundZeroSequence) {
-                    break;
-                }
-            }
+        for (int i = 0; i <= nums.length; i++) {
+            fullSequenceSum += i;
         }
+        int missingNumber = (int) (fullSequenceSum - arraySum);
         return missingNumber;
     }
 }
