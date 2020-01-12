@@ -16,7 +16,10 @@ public class LongestCommonPrefixFinderTest {
     private Object[] getParams() {
         return $(
                 $(new String[] {"flower", "flow", "flight"}, "fl"),
-                $(new String[] {"dog","racecar","car"}, "")
+                $(new String[] {"dog","racecar","car"}, ""),
+                $(new String[] {}, ""),
+                $(new String[] {"", ""}, ""),
+                $(new String[] {"a", "ac"}, "a")
         );
     }
 
