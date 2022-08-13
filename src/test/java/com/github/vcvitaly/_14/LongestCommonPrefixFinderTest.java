@@ -1,5 +1,6 @@
-package com.github.vcvitaly._28;
+package com.github.vcvitaly._14;
 
+import com.github.vcvitaly._14.LongestCommonPrefixFinder;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;

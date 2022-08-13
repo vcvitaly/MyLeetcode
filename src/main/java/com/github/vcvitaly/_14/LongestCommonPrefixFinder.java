@@ -1,4 +1,4 @@
-package com.github.vcvitaly._28;
+package com.github.vcvitaly._14;
 
 public class LongestCommonPrefixFinder {
 
