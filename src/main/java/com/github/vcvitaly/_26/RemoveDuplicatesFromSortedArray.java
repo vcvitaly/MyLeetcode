@@ -28,6 +28,20 @@ public class RemoveDuplicatesFromSortedArray {
         return k;
     }
 
+    public int removeDuplicatesFast(int[] nums) {
+        if (nums.length <= 1) {
+            return nums.length;
+        }
+        int l = 1;
+        for (int r = 1; r < nums.length; r++) {
+            if (nums[r] != nums[r-1]) {
+                nums[l++] = nums[r];
+            }
+        }
+
+        return l;
+    }
+
     /*
     This solution is not mine
     public int removeDuplicates(int[] nums) {

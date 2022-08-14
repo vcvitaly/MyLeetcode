@@ -22,13 +22,14 @@ class RemoveDuplicatesFromSortedArrayTest {
     void findsMaxIndexAfterRemovingDuplicates(Param p) {
         System.out.println(p);
 
-        assertThat(duplicatesRemover.removeDuplicatesSlow(p.nums)).isEqualTo(p.k);
+        assertThat(duplicatesRemover.removeDuplicatesFast(p.nums)).isEqualTo(p.k);
     }
 
     static Stream<Param> params() {
         return Stream.of(
                 Param.of(new int[] {1,1,2}, 2),
                 Param.of(new int[] {0,0,1,1,1,2,2,3,3,4}, 5),
+                Param.of(new int[] {0,1,1,1,2}, 3),
                 Param.of(new int[] {0,0,0,1},2),
                 Param.of(new int[] {1}, 1),
                 Param.of(new int[] {1,1}, 1)
