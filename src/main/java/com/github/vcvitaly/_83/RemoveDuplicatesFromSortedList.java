@@ -1,5 +1,6 @@
 package com.github.vcvitaly._83;
 
+import com.github.vcvitaly.common.ListNode;
 import java.util.List;
 
 /**

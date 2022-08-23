@@ -1,5 +1,6 @@
 package com.github.vcvitaly._83;
 
+import com.github.vcvitaly.common.ListNode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -23,7 +24,6 @@ class RemoveDuplicatesFromSortedListTest {
     @MethodSource("params")
     void removesDuplicatesFromALinkedList(Param p) {
         System.out.println(p);
-
 
         List<Integer> result = new ArrayList<>();
         ListNode resultHead = duplicateRemover.deleteDuplicates(p.head);
