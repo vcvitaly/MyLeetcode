@@ -21,7 +21,7 @@ public class ValidPalindrome {
                 sb.append(aChar);
             }
         }
-        return sb.toString().toLowerCase().equals(sb.reverse().toString().toLowerCase());
+        return sb.toString().equalsIgnoreCase(sb.reverse().toString());
     }
 
     private boolean isAlphaNumeric(char c) {
