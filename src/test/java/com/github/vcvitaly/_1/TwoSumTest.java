@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static junitparams.JUnitParamsRunner.$;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(JUnitParamsRunner.class)
 public class TwoSumTest {
@@ -23,6 +23,6 @@ public class TwoSumTest {
     @Parameters(method = "getParamsForTwoSum")
     public void twoSum(int[] nums, int target, int[] expectedOutput) {
         int[] output = twoSum.twoSum(nums, target);
-        assertArrayEquals(expectedOutput, output);
+        assertThat(output).containsExactly(expectedOutput);
     }
 }
