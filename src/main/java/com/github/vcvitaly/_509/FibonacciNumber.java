@@ -11,11 +11,8 @@ import java.util.Arrays;
 public class FibonacciNumber {
 
     public int fib(int n) {
-        if (n == 0) {
-            return 0;
-        }
-        if (n == 1) {
-            return 1;
+        if (n <= 1) {
+            return n;
         }
         int[] nums = new int[n+1];
         nums[0] = 0;
