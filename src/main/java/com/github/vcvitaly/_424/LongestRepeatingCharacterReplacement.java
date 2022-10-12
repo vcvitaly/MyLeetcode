@@ -1,5 +1,8 @@
 package com.github.vcvitaly._424;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * LongestRepeatingCharacterReplacement.
  *
@@ -12,30 +15,31 @@ public class LongestRepeatingCharacterReplacement {
             return s.length();
         }
 
-        return Math.max(characterReplacementOneWay(s, k),
-                characterReplacementOneWay(new StringBuilder(s).reverse().toString(), k));
-    }
-
-    private int characterReplacementOneWay(String s, int k) {
         int longestSubstringLength = 0;
-        int countOfReplacementsLeft;
         for (int i = 0; i < s.length() - k; i++) {
-            char substringStartingChar = s.charAt(i);
-            countOfReplacementsLeft = k;
-            int substringLength = 0;
+            int countOfReplacementsLeft = k;
             int j = i;
+            Map<Character, Integer> map = new HashMap<>();
+            int mostFrequentCharCount = 0;
+            int countOfAllCharsInTheMap = 0;
             while (j < s.length()) {
-                if (s.charAt(j) != substringStartingChar) {
-                    if (countOfReplacementsLeft == 0) {
+                char currentChar = s.charAt(j);
+                map.merge(currentChar, 1, Integer::sum);
+                int count = map.get(currentChar);
+                if (count > mostFrequentCharCount) {
+                    mostFrequentCharCount = count;
+                } else {
+                    if (countOfReplacementsLeft > 0) {
+                        countOfReplacementsLeft--;
+                    } else {
                         break;
                     }
-                    countOfReplacementsLeft--;
                 }
-                substringLength++;
+                countOfAllCharsInTheMap++;
                 j++;
             }
-            if (substringLength > longestSubstringLength) {
-                longestSubstringLength = substringLength;
+            if (countOfAllCharsInTheMap > longestSubstringLength) {
+                longestSubstringLength = countOfAllCharsInTheMap;
             }
         }
 
