@@ -33,8 +33,7 @@ class StringDecoderTest {
                 Param.of("2[abc]3[cd]ef", "abcabccdcdcdef"),
                 Param.of("3[a]", "aaa"),
                 Param.of("1[a1[b1[c]]]", "abc"),
-                Param.of("3[2[c]]", "cccccc"),
-                Param.of("3[a2[c]b2[d]]", "accbddaccbddaccbdd")
+                Param.of("3[2[c]]", "cccccc")
         );
     }
 

@@ -1,5 +1,7 @@
 package com.github.vcvitaly._394;
 
+import java.util.Stack;
+
 /**
  * StringDecoder.
  *
@@ -8,22 +10,55 @@ package com.github.vcvitaly._394;
 public class StringDecoder {
 
     public String decodeString(String s) {
-        StringBuilder numberSb = new StringBuilder();
+        return recursiveDecode(s);
+    }
 
+    private String recursiveDecode(String s) {
+        if (consistsOfLetters(s)) {
+            return s;
+        }
+
+        StringBuilder res = new StringBuilder();
+        StringBuilder numberSb = new StringBuilder();
+        StringBuilder substringSb = new StringBuilder();
+        int countOfOpenedBrackets = 0;
+        boolean insideSubstring = false;
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (isDigit(c)) {
-
+                if (insideSubstring) {
+                    substringSb.append(c);
+                } else {
+                    numberSb.append(c);
+                }
             } else if (c == '[') {
-
+                if (insideSubstring) {
+                    substringSb.append(c);
+                } else {
+                    insideSubstring = true;
+                }
+                countOfOpenedBrackets++;
             } else if (isLetter(c)) {
-
+                if (insideSubstring) {
+                    substringSb.append(c);
+                } else {
+                    res.append(c);
+                }
             } else if (c == ']') {
-
+                if (countOfOpenedBrackets > 1) {
+                    substringSb.append(c);
+                } else {
+                    insideSubstring = false;
+                    int times = Integer.parseInt(numberSb.toString());
+                    res.append(repeat(recursiveDecode(substringSb.toString()), times));
+                    numberSb = new StringBuilder();
+                    substringSb = new StringBuilder();
+                }
+                countOfOpenedBrackets--;
             }
         }
 
-        return "";
+        return res.toString();
     }
 
     private String repeat(String s, int times) {
@@ -42,8 +77,12 @@ public class StringDecoder {
         return c >= 97 && c <= 122;
     }
 
-    private static class Node {
-        private int number;
-        private String s;
+    private boolean consistsOfLetters(String s) {
+        for (int i = 0; i < s.length(); i++) {
+            if (!isLetter(s.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 }
