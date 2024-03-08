@@ -36,7 +36,9 @@ class LongestRepeatingCharacterReplacementTest {
                 ),
                 Param.of("AABABBA", 1, 4),
                 Param.of("ABBB", 2, 4),
-                Param.of("BAAAB", 2, 5)
+                Param.of("BAAAB", 2, 5),
+                Param.of("AB", 0, 1),
+                Param.of("ABCDDDE", 0, 3)
         );
     }
 
