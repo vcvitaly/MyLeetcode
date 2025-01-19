@@ -1,32 +1,29 @@
 package com.github.vcvitaly._2130;
 
 import com.github.vcvitaly.common.ListNode;
-import java.util.Stack;
 
 public class MaxTwinSumFinder {
 
     public int pairSum(ListNode head) {
-        ListNode curNode = head;
         int size = 0;
+        ListNode curNode = head;
         while (curNode != null) {
             size++;
             curNode = curNode.next;
         }
-        int middle = size / 2;
-        final Stack<Integer> stack = new Stack<>();
+        int[] arr = new int[size];
         curNode = head;
-        int i = 0;
-        for (; i < middle; i++) {
-            stack.push(curNode.val);
+        for (int i = 0; i < size; i++) {
+            arr[i] = curNode.val;
             curNode = curNode.next;
         }
+        int middle = size / 2;
         int maxTwinSum = 0;
-        for (; i < size; i++) {
-            final int sum = stack.pop() + curNode.val;
+        for (int i = 0, j = size - 1; i < middle && j >= middle; i++, j--) {
+            final int sum = arr[i] + arr[j];
             if (sum > maxTwinSum) {
                 maxTwinSum = sum;
             }
-            curNode = curNode.next;
         }
         return maxTwinSum;
     }
