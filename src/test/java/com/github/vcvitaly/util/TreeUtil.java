@@ -45,10 +45,10 @@ public class TreeUtil {
     }
 
     private static int leftChildIndex(int i) {
-        return (i + 1) * 2 - 1;
+        return i * 2 + 1;
     }
 
     private static int rightChildIndex(int i) {
-        return (i + 1) * 2;
+        return i * 2 + 2;
     }
 }

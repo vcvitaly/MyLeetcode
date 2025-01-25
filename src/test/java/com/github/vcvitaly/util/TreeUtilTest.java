@@ -44,4 +44,14 @@ class TreeUtilTest {
                 )
         ));
     }
+
+    @Test
+    void test4() {
+        final TreeNode root = TreeUtil.buildTreeNode(new Integer[]{0,1,null,2,null});
+        assertThat(root).isEqualTo(new TreeNode(
+                0,
+                new TreeNode(1),
+                new TreeNode(2)
+        ));
+    }
 }
