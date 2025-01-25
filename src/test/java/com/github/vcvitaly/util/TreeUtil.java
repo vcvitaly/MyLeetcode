@@ -16,6 +16,9 @@ public class TreeUtil {
     }
 
     public static TreeNode buildTreeNode(List<Integer> arrRepresentation) {
+        if (arrRepresentation.isEmpty()) {
+            return null;
+        }
         final TreeNode[] treeNodes = new TreeNode[arrRepresentation.size()];
         for (int i = 0; i < arrRepresentation.size(); i++) {
             final Integer value = arrRepresentation.get(i);
