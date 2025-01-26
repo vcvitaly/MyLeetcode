@@ -4,36 +4,55 @@ import java.util.concurrent.atomic.AtomicReference;
 
 class FooBar {
     private int n;
-    private final AtomicReference<Word> word = new AtomicReference<>(Word.FOO);
+    private final Object lock = new Object();
+    private boolean isFoo = true;
 
     public FooBar(int n) {
         this.n = n;
     }
 
     public void foo(Runnable printFoo) throws InterruptedException {
-
-        for (int i = 0; i < n; i++) {
-            // printFoo.run() outputs "foo". Do not change or remove this line.
-            while (!word.get().equals(Word.FOO)) {
-                Thread.sleep(0, 1);
+        synchronized (lock) {
+            System.out.println("Entering foo synchronized");
+            for (int i = 0; i < n; i++) {
+                // printFoo.run() outputs "foo". Do not change or remove this line.
+                while (!isFoo) {
+                    try {
+                        System.out.println("FooThread is waiting for lock");
+                        lock.wait();
+                        System.out.println("FooThread woke up");
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        return;
+                    }
+                }
+                printFoo.run();
+                isFoo = false;
+                lock.notifyAll();
             }
-            printFoo.run();
-            word.set(Word.BAR);
         }
     }
 
     public void bar(Runnable printBar) throws InterruptedException {
-        for (int i = 0; i < n; i++) {
-            while (!word.get().equals(Word.BAR)) {
-                Thread.sleep(0, 1);
+        synchronized (lock) {
+            System.out.println("Entering bar synchronized");
+            for (int i = 0; i < n; i++) {
+                // printFoo.run() outputs "foo". Do not change or remove this line.
+                while (isFoo) {
+                    try {
+                        System.out.println("BarThread is waiting for lock");
+                        lock.wait();
+                        System.out.println("BarThread woke up");
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        return;
+                    }
+                }
+                printBar.run();
+                isFoo = true;
+                lock.notifyAll();
             }
-            printBar.run();
-            word.set(Word.FOO);
         }
-    }
-
-    private enum Word {
-        FOO, BAR
     }
 
     private void printFoo() {
@@ -46,14 +65,15 @@ class FooBar {
 
     public static void main(String[] args) throws Exception {
         final FooBar fooBar = new FooBar(2);
-//        test1(fooBar);
+        test1(fooBar);
 //        test2(fooBar);
-        test3(fooBar);
+//        test3(fooBar);
     }
 
-    private static void test1(FooBar fooBar) {
-        startA(fooBar);
+    private static void test1(FooBar fooBar) throws Exception {
         startB(fooBar);
+        Thread.sleep(0, 1);
+        startA(fooBar);
     }
 
     private static void test2(FooBar fooBar) throws Exception {
