@@ -1,33 +1,25 @@
 package com.github.vcvitaly._215;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class KthLargestElementFinder {
 
     public int findKthLargest(int[] nums, int k) {
-        int largest = Integer.MIN_VALUE;
-        int prevLargest = Integer.MAX_VALUE;
-        Set<Integer> alreadyCheckedIndecies = new HashSet<>();
-        for (int i = 0; i < k; i++) {
-            largest = Integer.MIN_VALUE;
-            for (int j = 0; j < nums.length; j++) {
-                final int cur = nums[j];
-                if (cur >= largest && cur <= prevLargest && !alreadyCheckedIndecies.contains(j)) {
-                    largest = cur;
-                }
-            }
-            for (int j = 0; j < nums.length; j++) {
-                final int cur = nums[j];
-                if (cur == largest) {
-                    alreadyCheckedIndecies.add(j);
-                    if (alreadyCheckedIndecies.size() >= k) {
-                        return largest;
-                    }
-                }
-            }
-            prevLargest = largest;
+        final Map<Integer, Integer> countByElement = new LinkedHashMap<>();
+        for (int num : nums) {
+            countByElement.merge(num, 1, Integer::sum);
         }
-        return largest;
+        int passed = 0;
+        final ArrayList<Map.Entry<Integer, Integer>> entries = new ArrayList<>(countByElement.entrySet());
+        for (int i = entries.size() - 1; i >= 0; i--) {
+            final Map.Entry<Integer, Integer> e = entries.get(i);
+            if (passed + e.getValue() > k) {
+                return e.getKey();
+            }
+            passed += e.getValue();
+        }
+        return -1;
     }
 }
