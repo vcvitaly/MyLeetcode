@@ -1,6 +1,8 @@
 package com.github.vcvitaly._1268;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,5 +36,10 @@ class SearchSuggestionSystemTest {
                         List.of("havana"),
                         List.of("havana")
                 ));
+    }
+
+    @Test
+    void testPerf() {
+        final String baseString = IntStream.range(0, 1000).mapToObj(i -> "a").collect(Collectors.joining());
     }
 }
