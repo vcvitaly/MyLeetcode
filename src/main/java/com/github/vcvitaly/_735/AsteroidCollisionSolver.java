@@ -1,9 +1,24 @@
 package com.github.vcvitaly._735;
 
 import java.util.Objects;
+import java.util.Random;
 import java.util.Stack;
+import java.util.stream.IntStream;
 
 public class AsteroidCollisionSolver {
+
+    public static void main(String[] args) {
+        new AsteroidCollisionSolver().asteroidCollision(testData2());
+    }
+
+    private static int[] testData1() {
+        return IntStream.range(0, 10_000).map(i -> -2).toArray();
+    }
+
+    private static int[] testData2() {
+        final Random random = new Random();
+        return IntStream.range(0, 10_000).map(i -> random.nextInt(-1000, 1000)).toArray();
+    }
 
     private static final CollisionResult FULL = new FullExplosion();
 
@@ -15,19 +30,25 @@ public class AsteroidCollisionSolver {
         for (int i = 1; i < asteroids.length; i++) {
             Asteroid current = getAsteroid(asteroids[i]);
             CollisionResult collisionResult = null;
-            while (!s.isEmpty() && s.peek().movesTowards(current) && !Objects.equals(collisionResult, FULL)) {
+            while (!s.isEmpty() && s.peek().movesTowards(current) && FULL != collisionResult) {
                 final Asteroid prev = s.pop();
                 collisionResult = collisionResult(prev, current);
                 if (collisionResult instanceof PartialExplosion(Asteroid survivedAsteroid, boolean nextWon)) {
                     current = survivedAsteroid;
                 }
             }
-            if (!Objects.equals(collisionResult, FULL)) {
+            if (FULL != collisionResult) {
                 s.push(current);
             }
         }
 
-        return s.stream().mapToInt(Asteroid::value).toArray();
+
+        final int stackSize = s.size();
+        final int[] result = new int[stackSize];
+        for (int i = 0; i < stackSize; i++) {
+            result[stackSize - 1 - i] = s.pop().value();
+        }
+        return result;
     }
 
     private Asteroid getAsteroid(int size) {

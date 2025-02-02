@@ -1,5 +1,6 @@
 package com.github.vcvitaly._735;
 
+import java.util.stream.IntStream;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,5 +37,13 @@ class AsteroidCollisionSolverTest {
     void test5() {
         assertThat(solver.asteroidCollision(new int[] {-2,1,-1,-2}))
                 .isEqualTo(new int[] {-2,-2});
+    }
+
+    @Test
+    void testPerformance() {
+        final int[] array = IntStream.range(0, 10).map(i -> -2).toArray();
+        final int[] actual = solver.asteroidCollision(array);
+        assertThat(actual)
+                .isEqualTo(array);
     }
 }
