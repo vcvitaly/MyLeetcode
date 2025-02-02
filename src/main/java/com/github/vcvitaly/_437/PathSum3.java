@@ -24,6 +24,8 @@ public class PathSum3 {
 
             }
         }
+
+        return 0;
     }
 
     private static class Direction {

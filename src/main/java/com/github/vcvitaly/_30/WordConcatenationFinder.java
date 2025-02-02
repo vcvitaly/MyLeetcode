@@ -6,6 +6,6 @@ public class WordConcatenationFinder {
 
     public List<Integer> findSubstring(String s, String[] words) {
 
-
+        return null;
     }
 }
