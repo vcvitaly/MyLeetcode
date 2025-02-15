@@ -2,6 +2,7 @@ package com.github.vcvitaly._216;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class CombinationSum3Finder {
 
@@ -9,20 +10,29 @@ public class CombinationSum3Finder {
         return combinations(new SolutionSet(1, 9, k), n);
     }
 
-    private List<List<Integer>> combinations(SolutionSet range, int target) {
-        if (range.onlyOneNumberRemains() && range.to <= target) {
-            return new ArrayList<>(List.of(List.of(range.to)));
+    private List<List<Integer>> combinations(SolutionSet solutionSet, int target) {
+        if (solutionSet.onlyOneNumberRemains()) {
+            for (Integer i : solutionSet.iterate()) {
+                if (i == target) {
+                    return List.of(List.of(i));
+                }
+            }
+            return List.of();
         }
         final List<List<Integer>> with = new ArrayList<>();
-        final List<List<Integer>> without = combinations(range.next(), target);
+        final List<List<Integer>> without = combinations(solutionSet.next(), target);
         for (List<Integer> combination : without) {
-            if (combination.stream().mapToInt(Integer::intValue).sum() + range.from == target) {
+            if (sum(combination) + solutionSet.from == target) {
                 final List<Integer> copy = new ArrayList<>(combination);
-                copy.add(range.from);
+                copy.add(solutionSet.from);
                 with.add(copy);
             }
         }
         return with.size() > without.size() ? with : without;
+    }
+
+    private static int sum(List<Integer> combination) {
+        return combination.stream().mapToInt(Integer::intValue).sum();
     }
 
     private record SolutionSet(int from, int to, int numbersRemaining) {
@@ -32,7 +42,7 @@ public class CombinationSum3Finder {
         }
 
         public boolean onlyOneNumberRemains() {
-            return numbersRemaining == 1 && length() == 1;
+            return numbersRemaining == 1 || length() == 1;
         }
 
         public SolutionSet next() {
@@ -41,6 +51,10 @@ public class CombinationSum3Finder {
 
         private int length() {
             return to - from + 1;
+        }
+
+        public List<Integer> iterate() {
+            return IntStream.rangeClosed(from, to).boxed().toList();
         }
 
         @Override
