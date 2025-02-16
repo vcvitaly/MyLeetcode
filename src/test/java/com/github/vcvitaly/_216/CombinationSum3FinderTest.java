@@ -32,7 +32,27 @@ class CombinationSum3FinderTest {
     }
 
     @Test
+    void test3_1() {
+        assertThat(finder.combinationSum3(4, 18))
+                .isEqualTo(List.of(
+                        List.of(1,2,7,8),
+                        List.of(1,2,6,9),
+                        List.of(1,3,6,8),
+                        List.of(1,3,5,9),
+                        List.of(1,4,5,8),
+                        List.of(1,4,6,7)
+                ));
+    }
+
+    @Test
     void test4() {
         assertThat(finder.combinationSum3(4, 1)).isEqualTo(List.of());
+    }
+
+    @Test
+    void test5() {
+        assertThat(finder.combinationSum3(6, 21)).isEqualTo(List.of(
+                List.of(1,2,3,4,5,6)
+        ));
     }
 }
