@@ -34,4 +34,13 @@ class WordBreakDeterminatorTest {
     void test5() {
         assertThat(determinator.wordBreak("cars", List.of("car", "ca", "rs"))).isTrue();
     }
+
+    @Test
+    void test6() {
+        final String s =
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab";
+        assertThat(determinator.wordBreak(
+                s, List.of("a","aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa","aaaaaaaaaa")
+        )).isFalse();
+    }
 }

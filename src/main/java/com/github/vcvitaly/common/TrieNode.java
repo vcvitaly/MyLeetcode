@@ -20,4 +20,9 @@ public record TrieNode(Character value, Map<Character, TrieNode> edges) {
     public void addChild(Character key, TrieNode child) {
         edges.put(key, child);
     }
+
+    @Override
+    public String toString() {
+        return "TrieNode{value=%s, edges=%s}".formatted(value, edges.keySet());
+    }
 }

@@ -2,28 +2,34 @@ package com.github.vcvitaly._139;
 
 import com.github.vcvitaly.common.TrieNode;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
+import java.util.Queue;
 
 public class WordBreakDeterminator {
 
     public boolean wordBreak(String s, List<String> wordDict) {
         Trie trie = new Trie();
         trie.insert(s);
+        final Queue<TrieNode> discoveryQ = new LinkedList<>();
         while (true) {
-            Optional<TrieNode> next = wordDict.stream()
+            List<TrieNode> candidateNodes = wordDict.stream()
                     .map(trie::advance)
                     .filter(Objects::nonNull)
-                    .findFirst();
-            if (next.isPresent()) {
-                TrieNode node = next.get();
-                if (node.hasKey(Trie.END)) {
+                    .toList();
+            if (!candidateNodes.isEmpty()) {
+                if (candidateNodes.stream().anyMatch(cn -> cn.hasKey(Trie.END))) {
                     return true;
+                } else {
+                    discoveryQ.addAll(candidateNodes);
+                    trie = new Trie(discoveryQ.poll());
                 }
-                trie = new Trie(node);
             } else {
-                return false;
+                if (discoveryQ.isEmpty()) {
+                    return false;
+                }
+                trie = new Trie(discoveryQ.poll());
             }
         }
     }
