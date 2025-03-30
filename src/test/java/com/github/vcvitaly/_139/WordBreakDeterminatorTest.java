@@ -29,4 +29,9 @@ class WordBreakDeterminatorTest {
     void test4() {
         assertThat(determinator.wordBreak("cat", List.of("cat"))).isTrue();
     }
+
+    @Test
+    void test5() {
+        assertThat(determinator.wordBreak("cars", List.of("car", "ca", "rs"))).isTrue();
+    }
 }
