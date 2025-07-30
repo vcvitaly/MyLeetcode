@@ -10,29 +10,50 @@ import java.util.Queue;
 public class WordBreakDeterminator {
 
     public boolean wordBreak(String s, List<String> wordDict) {
-        Trie trie = new Trie();
+        final Trie trie = new Trie();
         trie.insert(s);
-        final Queue<TrieNode> discoveryQ = new LinkedList<>();
-        while (true) {
-            List<TrieNode> candidateNodes = wordDict.stream()
-                    .map(trie::advance)
-                    .filter(Objects::nonNull)
-                    .toList();
-            if (!candidateNodes.isEmpty()) {
-                if (candidateNodes.stream().anyMatch(cn -> cn.hasKey(Trie.END))) {
-                    return true;
-                } else {
-                    discoveryQ.addAll(candidateNodes);
-                    trie = new Trie(discoveryQ.poll());
-                }
+        return wordBreak(trie, s, 0, wordDict);
+    }
+
+    private boolean wordBreak(Trie trie, String s, int curCharIndex, List<String> wordDict) {
+        final List<AdvanceResult> advanceResults = wordDict.stream()
+                .map(word -> advance(trie, word))
+                .filter(Objects::nonNull)
+                .toList();
+        if (!advanceResults.isEmpty()) {
+            if (advanceResults.stream().anyMatch(r -> r instanceof FinalResult)) {
+                return true;
             } else {
-                if (discoveryQ.isEmpty()) {
-                    return false;
+                for (AdvanceResult advanceResult : advanceResults) {
+                    final IntermediateResult r =  (IntermediateResult) advanceResult;
+                    return wordBreak(
+                            new Trie(r.node()),
+                            s,
+                            curCharIndex + r.shift(),
+                            wordDict
+                    );
                 }
-                trie = new Trie(discoveryQ.poll());
             }
         }
+        return false;
     }
+
+    private AdvanceResult advance(Trie trie, String word) {
+        final TrieNode candidateNode = trie.advance(word);
+        if (candidateNode == null) {
+            return null;
+        }
+        if (candidateNode.hasKey(Trie.END)) {
+            return new FinalResult();
+        }
+        return new IntermediateResult(candidateNode, word.length());
+    }
+
+    private sealed interface AdvanceResult permits IntermediateResult,FinalResult {}
+
+    private record IntermediateResult(TrieNode node, int shift) implements AdvanceResult {}
+
+    private record FinalResult() implements AdvanceResult {}
 
     private record Trie(TrieNode root) {
 
