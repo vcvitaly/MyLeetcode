@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class WordBreakDeterminatorTest {
 
-    private final WordBreakDeterminator determinator = new WordBreakDeterminator();
+    private final WordBreakDeterminator determinator = new TrielessWordBreakDeterminator();
 
     @Test
     void test1() {
@@ -42,5 +42,14 @@ class WordBreakDeterminatorTest {
         assertThat(determinator.wordBreak(
                 s, List.of("a","aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa","aaaaaaaaaa")
         )).isFalse();
+    }
+
+    @Test
+    void test7() {
+        final String s =
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+        assertThat(determinator.wordBreak(
+                s, List.of("a","aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa","aaaaaaaaaa")
+        )).isTrue();
     }
 }
