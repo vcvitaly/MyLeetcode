@@ -1,7 +1,5 @@
 package com.github.vcvitaly._139;
 
-import com.github.vcvitaly.common.TrieNode;
-
 import java.util.List;
 
 public class TrielessWordBreakDeterminator implements WordBreakDeterminator {

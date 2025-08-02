@@ -2,15 +2,49 @@ package com.github.vcvitaly._139;
 
 import com.github.vcvitaly.common.TrieNode;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class TrieWordBreakDeterminator implements WordBreakDeterminator {
 
+    // I need 2 tries
+
     @Override
     public boolean wordBreak(String s, List<String> wordDict) {
+        final Set<Character> dictChars = wordDict.stream()
+                .map(this::chars)
+                .reduce(new HashSet<>(), (acc, set) -> {
+                    acc.addAll(set);
+                    return acc;
+                });
+        final Set<Character> sChars = chars(s);
+        if (!dictChars.containsAll(sChars)) {
+            return false;
+        }
         final Trie trie = new Trie();
         trie.insert(s);
-        return wordBreak(trie, s, 0, wordDict);
+        ArrayList<String> wordDictSorted = new ArrayList<>(wordDict);
+        wordDictSorted.sort((s1, s2) -> {
+            if (s1.length() > s2.length()) {
+                return -1;
+            }
+            if (s2.length() > s1.length()) {
+                return 1;
+            }
+            return s1.compareTo(s2);
+        });
+        return wordBreak(trie, s, 0, wordDictSorted);
+    }
+
+    private Set<Character> chars(String s) {
+        final Set<Character> chars = new HashSet<>();
+        for (int i = 0; i < s.length(); i++) {
+            chars.add(s.charAt(i));
+        }
+        return chars;
     }
 
     private boolean wordBreak(Trie trie, String s, int curCharIndex, List<String> wordDict) {
