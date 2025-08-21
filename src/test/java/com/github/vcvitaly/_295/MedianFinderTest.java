@@ -1,11 +1,16 @@
 package com.github.vcvitaly._295;
 
+import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.STREAM;
 
 class MedianFinderTest {
 
@@ -40,6 +45,20 @@ class MedianFinderTest {
         testMedianFinder(
                 Arrays.asList(1, 2, 3, 4, 5, null),
                 Arrays.asList(null, null, null, null, null, 3.0)
+        );
+    }
+
+    @Test
+    void test_performance() {
+        testMedianFinder(
+                Stream.concat(
+                        IntStream.rangeClosed(1, 5 * 10_000).mapToObj(Integer::valueOf),
+                        Stream.of((Integer) null)
+                ).toList(),
+                Stream.concat(
+                        IntStream.rangeClosed(1, 5 * 10_000).mapToObj(i -> null),
+                        Stream.of((25_000 + 25_001)/2.0)
+                ).toList()
         );
     }
 

@@ -1,54 +1,79 @@
 package com.github.vcvitaly._295;
 
-import com.github.vcvitaly.common.ListNode;
+import java.util.*;
 
 public class MedianFinder {
 
-    private ListNode list;
-    private int listSize;
-    private boolean modified;
-    private double median;
+    private final MedianList medians = new MedianList();
+    private final Map<Integer, Integer> countMap = new HashMap<>();
+    private final NavigableSet<NumberNode> tree = new TreeSet<>();
 
     public void addNum(int num) {
-        if (list == null) {
-            list = new ListNode(num);
-        } else {
-            ListNode current = list;
-            ListNode prev = null;
-            while (current != null && current.val < num) {
-                prev = current;
-                current = current.next;
-            }
-            if (current == null) {
-                prev.next = new ListNode(num);
-            } else {
-                if (prev == null) {
-                    list = new ListNode(num, current);
-                } else {
-                    prev.next = new ListNode(num, current);
-                }
-            }
+        if (countMap.isEmpty()) {
+            int position = 0;
+            countMap.put(num, position);
+            NumberNode node = new NumberNode(num, position);
+            tree.add(node);
+            medians.add(node);
+            return;
         }
-        listSize++;
-        modified = true;
+        final int position = countMap.merge(num, 1, Integer::sum);
+        final NumberNode node = new NumberNode(num, position);
+        tree.add(node);
+        if (medians.size() == 2) {
+            if (node.gt(medians.getLast())) {
+                medians.clearAndAdd(medians.getLast());
+            } else if (node.lt(medians.getFirst())) {
+                medians.clearAndAdd(medians.getFirst());
+            } else {
+                medians.clearAndAdd(node);
+            }
+        } else if (medians.size() == 1) {
+            if (node.gt(medians.getFirst())) {
+                medians.add(tree.higher(medians.getFirst()));
+            } else {
+                medians.add(tree.lower(medians.getFirst()));
+            }
+        } else {
+            throw new IllegalStateException("Medians should not be empty here or contain more than 2 elements");
+        }
     }
 
     public double findMedian() {
-        if (!modified) {
-            return median;
+        return medians.median();
+    }
+
+    private record NumberNode(int num, int position) implements Comparable<NumberNode> {
+        @Override
+        public int compareTo(NumberNode o) {
+            return Comparator.comparing(NumberNode::num).thenComparing(NumberNode::position).compare(this, o);
         }
-        modified = false;
-        ListNode current = list;
-        double median;
-        final int until = listSize % 2 == 1 ? listSize/2 : listSize/2-1;
-        for (int i = 0; i < until; i++) {
-            current = current.next;
+
+        public boolean gt(NumberNode other) {
+            return compareTo(other) > 0;
         }
-        if (listSize % 2 == 1) {
-            median = current.val;
-            return median;
+
+        public boolean lt(NumberNode other) {
+            return compareTo(other) < 0;
         }
-        median = (current.val + current.next.val) / 2.0;
-        return median;
+    }
+
+    private static class MedianList extends LinkedList<NumberNode> {
+        @Override
+        public boolean add(NumberNode node) {
+            return super.add(node);
+        }
+
+        public void clearAndAdd(NumberNode node) {
+            clear();
+            add(node);
+        }
+
+        public double median() {
+            final double sum = stream()
+                    .mapToInt(NumberNode::num)
+                    .sum();
+            return sum / size();
+        }
     }
 }
