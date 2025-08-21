@@ -19,6 +19,30 @@ class MedianFinderTest {
         );
     }
 
+    @Test
+    void test2() {
+        testMedianFinder(
+                Arrays.asList(1, null),
+                Arrays.asList(null, 1.0)
+        );
+    }
+
+    @Test
+    void test3() {
+        testMedianFinder(
+                Arrays.asList(1, 1, null),
+                Arrays.asList(null, null, 1.0)
+        );
+    }
+
+    @Test
+    void test4() {
+        testMedianFinder(
+                Arrays.asList(1, 2, 3, 4, 5, null),
+                Arrays.asList(null, null, null, null, null, 3.0)
+        );
+    }
+
     private void testMedianFinder(List<Integer> inputs, List<Double> outputs) {
         assertThat(outputs).hasSize(inputs.size());
         for (int i = 0; i < inputs.size(); i++) {
