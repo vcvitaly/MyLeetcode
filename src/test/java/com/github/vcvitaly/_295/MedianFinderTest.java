@@ -49,6 +49,14 @@ class MedianFinderTest {
     }
 
     @Test
+    void test5() {
+        testMedianFinder(
+                Arrays.asList(-1, null, -2, null, -3, null, -4, null, -5, null),
+                Arrays.asList(null, -1.0, null, -1.5, null, -2.0, null, -2.5, null, -3.0)
+        );
+    }
+
+    @Test
     void test_performance() {
         testMedianFinder(
                 Stream.concat(
@@ -72,8 +80,14 @@ class MedianFinderTest {
             if (inputs.get(i) != null) {
                 medianFinder.addNum(inputs.get(i));
             }
-            if (outputs.get(i) != null) {
-                assertThat(medianFinder.findMedian()).isEqualTo(outputs.get(i));
+            final Double output = outputs.get(i);
+            if (output != null) {
+                final double median = medianFinder.findMedian();
+                int finalI1 = i;
+                assertThat(median)
+                        .withFailMessage(() -> "Expected %s, got %s at position %d"
+                                .formatted(output, median, finalI1))
+                        .isEqualTo(output);
             }
         }
     }

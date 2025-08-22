@@ -46,7 +46,7 @@ public class MedianFinder {
     private record NumberNode(int num, int position) implements Comparable<NumberNode> {
         @Override
         public int compareTo(NumberNode o) {
-            return Comparator.comparing(NumberNode::num).thenComparing(NumberNode::position).compare(this, o);
+            return Comparator.comparingInt(NumberNode::num).thenComparingInt(NumberNode::position).compare(this, o);
         }
 
         public boolean gt(NumberNode other) {
@@ -70,6 +70,7 @@ public class MedianFinder {
         }
 
         public double median() {
+            sort(Comparator.naturalOrder());
             final double sum = stream()
                     .mapToInt(NumberNode::num)
                     .sum();
