@@ -1,5 +1,7 @@
 package com.github.vcvitaly.common;
 
+import java.util.Objects;
+
 /**
  * TreeNode.
  *
@@ -21,5 +23,24 @@ public class TreeNode {
         this.val = val;
         this.left = left;
         this.right = right;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        TreeNode treeNode = (TreeNode) o;
+        return val == treeNode.val && Objects.equals(left, treeNode.left) && Objects.equals(right, treeNode.right);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(val, left, right);
+    }
+
+    @Override
+    public String toString() {
+        return """
+                TreeNode{val=%d, left=%s, right=%s}"""
+                .formatted(val, left, right);
     }
 }
