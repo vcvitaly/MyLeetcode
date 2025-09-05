@@ -18,4 +18,16 @@ class RegexWordSearcherTest {
         assertThat(searcher.search(".ad")).isTrue();
         assertThat(searcher.search("b..")).isTrue();
     }
+
+    @Test
+    void test2() {
+        searcher.addWord("a");
+        searcher.addWord("a");
+        assertThat(searcher.search(".")).isTrue();
+        assertThat(searcher.search("a")).isTrue();
+        assertThat(searcher.search("aa")).isFalse();
+        assertThat(searcher.search("a")).isTrue();
+        assertThat(searcher.search(".a")).isFalse();
+        assertThat(searcher.search("a.")).isFalse();
+    }
 }
