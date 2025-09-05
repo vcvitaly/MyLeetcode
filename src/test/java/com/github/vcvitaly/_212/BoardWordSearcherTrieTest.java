@@ -2,9 +2,9 @@ package com.github.vcvitaly._212;
 
 import org.junit.jupiter.api.Test;
 
-class WordSearcherTrieTest {
+class BoardWordSearcherTrieTest {
 
-    private final WordSearcher.Trie trie = new WordSearcher.Trie();
+    private final BoardWordSearcher.Trie trie = new BoardWordSearcher.Trie();
 
     @Test
     void correctIterableIsReturned() {
