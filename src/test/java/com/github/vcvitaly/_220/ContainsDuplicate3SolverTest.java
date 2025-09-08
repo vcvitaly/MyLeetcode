@@ -19,6 +19,13 @@ class ContainsDuplicate3SolverTest {
     void test2() {
         assertThat(
                 solver.containsNearbyAlmostDuplicate(new int[]{1,5,9,1,5,9}, 2, 3)
+        ).isFalse();
+    }
+
+    @Test
+    void test3() {
+        assertThat(
+                solver.containsNearbyAlmostDuplicate(new int[]{1,3}, 1, 2)
         ).isTrue();
     }
 }
