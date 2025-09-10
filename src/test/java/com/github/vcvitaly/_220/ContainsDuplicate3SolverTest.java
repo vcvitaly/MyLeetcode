@@ -2,6 +2,8 @@ package com.github.vcvitaly._220;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.stream.IntStream;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ContainsDuplicate3SolverTest {
@@ -55,5 +57,13 @@ class ContainsDuplicate3SolverTest {
         assertThat(
                 solver.containsNearbyAlmostDuplicate(new int[]{7,1,3}, 2, 3)
         ).isTrue();
+    }
+
+    @Test
+    void perfTest() {
+        int[] nums = IntStream.rangeClosed(1, 100_000).map(i -> i * 2).toArray();
+        assertThat(
+                solver.containsNearbyAlmostDuplicate(nums, nums.length, 1)
+        ).isFalse();
     }
 }
