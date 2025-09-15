@@ -15,21 +15,38 @@ public class RussianDollEnvelopSolver {
                 .collect(Collectors.toCollection(ArrayList::new));
         int maxEnvelopes = 0;
         RussianDollEnvelope prev = null;
+        RussianDollEnvelope prevIncluded = null;
         for (RussianDollEnvelope envelop : envelopObjects) {
-            if (prev == null || envelop.compareTo(prev) < 0) {
+            if (fits(prev, envelop) || fits(prevIncluded, envelop)) {
                 maxEnvelopes++;
+                prevIncluded = envelop;
             }
             prev = envelop;
         }
         return maxEnvelopes;
     }
 
+    private boolean fits(RussianDollEnvelope prev, RussianDollEnvelope envelop) {
+        return prev == null || envelop.compareTo(prev) < 0 && envelop.height() < prev.height() && envelop.width() < prev.width();
+    }
+
     private record RussianDollEnvelope(int width, int height) implements Comparable<RussianDollEnvelope> {
         @Override
         public int compareTo(RussianDollEnvelope o) {
-            return Comparator.comparingInt(RussianDollEnvelope::height)
-                    .thenComparingInt(RussianDollEnvelope::width)
+            final int hComparison = Comparator.comparingInt(RussianDollEnvelope::height)
                     .compare(this, o);
+            final int wComparison = Comparator.comparingInt(RussianDollEnvelope::width)
+                    .compare(this, o);
+            if (hComparison > 0 &&  wComparison > 0) {
+                return 1;
+            }
+            if (hComparison == 0 && wComparison == 0) {
+                return 0;
+            }
+            if (hComparison < 0 && wComparison < 0) {
+                return -1;
+            }
+            return Comparator.comparingInt((RussianDollEnvelope rde) -> rde.height() + rde.width()).compare(this, o);
         }
     }
 }
