@@ -26,7 +26,7 @@ class SortedArrayPairMedianFinderTest {
     void test3() {
         assertThat(finder.findMedianSortedArrays(
                 new int[] {1,1,1}, new int[] {2,2,2}
-        )).isEqualTo(3);
+        )).isEqualTo(1.5);
     }
 
     @Test
@@ -34,5 +34,19 @@ class SortedArrayPairMedianFinderTest {
         assertThat(finder.findMedianSortedArrays(
                 new int[] {1,2,3}, new int[] {4}
         )).isEqualTo(2.5);
+    }
+
+    @Test
+    void test5() {
+        assertThat(finder.findMedianSortedArrays(
+                new int[] {1,3}, new int[] {2,4}
+        )).isEqualTo(2.5);
+    }
+
+    @Test
+    void test6() {
+        assertThat(finder.findMedianSortedArrays(
+                new int[] {1,4,5,6}, new int[] {2,3}
+        )).isEqualTo(3.5);
     }
 }
