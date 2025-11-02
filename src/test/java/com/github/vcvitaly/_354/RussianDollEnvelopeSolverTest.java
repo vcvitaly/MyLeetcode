@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class RussianDollEnvelopSolverTest {
+class RussianDollEnvelopeSolverTest {
 
-    private final RussianDollEnvelopSolver solver = new RussianDollEnvelopSolver();
+    private final RussianDollEnvelopeSolver solver = new RussianDollEnvelopeSolver();
 
     @Test
     void test1() {
