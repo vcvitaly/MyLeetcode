@@ -62,4 +62,19 @@ class RegExMatcherTest {
     void test9_2() {
         assertThat(regExMatcher.isMatch("aaaaa", "aa*aa")).isTrue();
     }
+
+    @Test
+    void test10() {
+        assertThat(regExMatcher.isMatch("aaaa", "a.*a")).isTrue();
+    }
+
+    @Test
+    void test11() {
+        assertThat(regExMatcher.isMatch("aaaa", "a.*b")).isFalse();
+    }
+
+    @Test
+    void test12() {
+        assertThat(regExMatcher.isMatch("aaaaa", "a.*ab")).isFalse();
+    }
 }
