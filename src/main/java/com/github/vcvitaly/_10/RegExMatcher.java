@@ -31,6 +31,22 @@ public class RegExMatcher {
         return token.repeatable() && token.endsAt() == p.length() - 1;
     }
 
+    private String reducePattern(String p) {
+        final StringBuilder sb = new StringBuilder();
+        Token token = nextToken(p, 0);
+        int i = 0;
+        char compared = '-';
+        while (i < p.length()) {
+            final char curChar = p.charAt(i);
+            if (token.repeatable()) {
+                // TODO WIP
+            } else {
+                sb.append(curChar);
+            }
+        }
+        return sb.toString();
+    }
+
     private Token nextToken(String p, int at) {
         if (at < p.length()) {
             final boolean repeatable = at + 1 < p.length() && p.charAt(at + 1) == '*';
@@ -42,6 +58,11 @@ public class RegExMatcher {
     private record Token(char c, boolean repeatable, int endsAt) {
         private boolean matches(char other) {
             return other == c || c == '.';
+        }
+
+        @Override
+        public String toString() {
+            return repeatable ? c + "*" : String.valueOf(c);
         }
     }
 }

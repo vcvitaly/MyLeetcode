@@ -70,11 +70,21 @@ class RegExMatcherTest {
 
     @Test
     void test11() {
-        assertThat(regExMatcher.isMatch("aaaa", "a.*b")).isFalse();
+        assertThat(regExMatcher.isMatch("aaab", "a.*a")).isFalse();
     }
 
     @Test
     void test12() {
         assertThat(regExMatcher.isMatch("aaaaa", "a.*ab")).isFalse();
+    }
+
+    @Test
+    void test13() {
+        assertThat(regExMatcher.isMatch("aa", "a.*.*a")).isTrue();
+    }
+
+    @Test
+    void test14() {
+        assertThat(regExMatcher.isMatch("ab", "a.*.*a")).isTrue();
     }
 }
