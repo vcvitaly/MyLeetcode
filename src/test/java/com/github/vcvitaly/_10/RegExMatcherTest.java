@@ -85,6 +85,21 @@ class RegExMatcherTest {
 
     @Test
     void test14() {
-        assertThat(regExMatcher.isMatch("ab", "a.*.*a")).isTrue();
+        assertThat(regExMatcher.isMatch("ab", "a.*.*a")).isFalse();
+    }
+
+    @Test
+    void test15() {
+        assertThat(regExMatcher.isMatch("axyzaa", "a.*ab*a")).isTrue();
+    }
+
+    @Test
+    void test16() {
+        assertThat(regExMatcher.isMatch("a", "ab*")).isTrue();
+    }
+
+    @Test
+    void test17() {
+        assertThat(regExMatcher.isMatch("aabcbcbcaccbcaabc", ".*a*aa*.*b*.c*.*a*")).isTrue();
     }
 }

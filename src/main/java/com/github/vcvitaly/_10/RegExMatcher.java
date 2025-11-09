@@ -1,50 +1,61 @@
 package com.github.vcvitaly._10;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
+
 public class RegExMatcher {
 
     public boolean isMatch(String s, String p) {
-        Token token = nextToken(p, 0);
-        if (token == null) {
+        final List<Token> tokens = getTokens(p);
+        int nonWildCardTokenCount = (int) tokens.stream().filter(Predicate.not(Token::wildcard)).count();
+        if (nonWildCardTokenCount > s.length()) {
             return false;
         }
-        int i = 0;
-        while (i < s.length()) {
-            final char curChar = s.charAt(i);
+        int sIndex = 0;
+        int tIndex = 0;
+        while (sIndex < s.length()) {
+            final char curChar = s.charAt(sIndex);
+            final Token token = tokens.get(tIndex);
+            if (token.wildcard() && sIndex + nonWildCardTokenCount >= s.length()) {
+                tIndex++;
+                continue;
+            }
             if (!token.matches(curChar)) {
-                if (token.repeatable()) {
-                    token = nextToken(p, token.endsAt() + 1);
-                    if (token == null) {
+                if (token.wildcard()) {
+                    tIndex++;
+                    if (tIndex >= tokens.size()) {
                         return false;
                     }
                     continue;
                 }
                 return false;
             }
-            if (!token.repeatable()) {
-                token = nextToken(p, token.endsAt() + 1);
-                if (token == null) {
-                    return i + 1 == s.length();
+            if (!token.wildcard()) {
+                nonWildCardTokenCount--;
+            }
+            sIndex++;
+            if (!token.wildcard() || sIndex + nonWildCardTokenCount >= s.length()) {
+                tIndex++;
+                if (tIndex >= tokens.size()) {
+                    return sIndex >= s.length();
                 }
             }
-            i++;
         }
-        return token.repeatable() && token.endsAt() == p.length() - 1;
+        return nonWildCardTokenCount <= 0;
     }
 
-    private String reducePattern(String p) {
-        final StringBuilder sb = new StringBuilder();
+    private List<Token> getTokens(String p) {
+        final List<Token> tokens = new ArrayList<>();
         Token token = nextToken(p, 0);
-        int i = 0;
-        char compared = '-';
-        while (i < p.length()) {
-            final char curChar = p.charAt(i);
-            if (token.repeatable()) {
-                // TODO WIP
-            } else {
-                sb.append(curChar);
-            }
+        if (token == null) {
+            return List.of();
         }
-        return sb.toString();
+        tokens.add(token);
+        while ((token = nextToken(p, token.endsAt() + 1)) != null) {
+            tokens.add(token);
+        }
+        return tokens;
     }
 
     private Token nextToken(String p, int at) {
@@ -55,14 +66,14 @@ public class RegExMatcher {
         return null;
     }
 
-    private record Token(char c, boolean repeatable, int endsAt) {
+    public record Token(char c, boolean wildcard, int endsAt) {
         private boolean matches(char other) {
             return other == c || c == '.';
         }
 
         @Override
         public String toString() {
-            return repeatable ? c + "*" : String.valueOf(c);
+            return wildcard ? c + "*" : String.valueOf(c);
         }
     }
 }
