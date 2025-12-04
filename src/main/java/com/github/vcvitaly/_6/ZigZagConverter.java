@@ -1,6 +1,5 @@
 package com.github.vcvitaly._6;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -12,15 +11,15 @@ public class ZigZagConverter {
             return s;
         }
 
-        final List<ArrayList<Character>> rows = IntStream.rangeClosed(1, numRows)
-                .mapToObj(i -> new ArrayList<Character>())
+        final List<StringBuilder> rows = IntStream.rangeClosed(1, numRows)
+                .mapToObj(i -> new StringBuilder())
                 .toList();
 
         boolean increasing = true;
         int rowNum = 0;
         for (int i = 0; i < s.length(); i++) {
             final char c = s.charAt(i);
-            rows.get(rowNum).add(c);
+            rows.get(rowNum).append(c);
             if (increasing) {
                 rowNum++;
                 if (rowNum == numRows - 1) {
@@ -35,7 +34,7 @@ public class ZigZagConverter {
         }
 
         return rows.stream()
-                .map(r -> r.stream().map(String::valueOf).collect(Collectors.joining("")))
+                .map(StringBuilder::toString)
                 .collect(Collectors.joining(""));
     }
 }
