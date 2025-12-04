@@ -24,14 +24,12 @@ public class LongestPalindromeFinder {
             final List<Integer> cIndexes = charIndexes.get(c);
             for (int j = cIndexes.size() - 1; j > 0; j--) {
                 final int rightIndex = cIndexes.get(j);
-                if (isPalindrome(s, leftIndex, rightIndex)) {
-                    int substrL = rightIndex - leftIndex + 1;
-                    if (substrL > maxLength) {
-                        maxLength = substrL;
-                        from = leftIndex;
-                        to = rightIndex;
-                        break;
-                    }
+                int substrL = rightIndex - leftIndex + 1;
+                if (substrL > maxLength && isPalindrome(s, leftIndex, rightIndex)) {
+                    maxLength = substrL;
+                    from = leftIndex;
+                    to = rightIndex;
+                    break;
                 }
             }
         }
