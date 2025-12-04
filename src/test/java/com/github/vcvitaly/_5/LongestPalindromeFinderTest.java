@@ -22,4 +22,14 @@ class LongestPalindromeFinderTest {
     void test3() {
         assertThat(finder.longestPalindrome("aabbb")).isEqualTo("bbb");
     }
+
+    @Test
+    void test4() {
+        assertThat(finder.longestPalindrome("aaaaaaaaaa")).isEqualTo("aaaaaaaaaa");
+    }
+
+    @Test
+    void test5() {
+        assertThat(finder.longestPalindrome("abaaaaaaaa")).isEqualTo("aaaaaaaa");
+    }
 }
