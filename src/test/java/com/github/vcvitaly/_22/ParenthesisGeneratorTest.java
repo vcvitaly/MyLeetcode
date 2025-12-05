@@ -18,6 +18,12 @@ class ParenthesisGeneratorTest {
 
     @Test
     void test2() {
+        assertThat(generator.generateParenthesis(2))
+                .isEqualTo(List.of("(())","()()"));
+    }
+
+    @Test
+    void test3() {
         assertThat(generator.generateParenthesis(3))
                 .isEqualTo(List.of("((()))","(()())","(())()","()(())","()()()"));
     }

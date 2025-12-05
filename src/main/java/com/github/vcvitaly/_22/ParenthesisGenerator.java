@@ -5,6 +5,10 @@ import java.util.List;
 public class ParenthesisGenerator {
 
     public List<String> generateParenthesis(int n) {
-        return null;
+        if (n == 1) {
+            return List.of("()");
+        }
+
+        return List.of();
     }
 }
