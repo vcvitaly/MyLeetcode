@@ -25,4 +25,10 @@ class BitCounterTest {
         assertThat(bitCounter.countBits(0))
                 .containsExactly(0);
     }
+
+    @Test
+    void test4() {
+        assertThat(bitCounter.countBits(4))
+                .containsExactly(0,1,1,2,1);
+    }
 }
