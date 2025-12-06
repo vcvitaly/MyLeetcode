@@ -24,7 +24,7 @@ class PascalTriangleSolverTest {
 
     @Test
     void test5() {
-        assertThat(solver.generate(2))
+        assertThat(solver.generate(5))
                 .containsExactly(List.of(1), List.of(1,1), List.of(1,2,1), List.of(1,3,3,1), List.of(1,4,6,4,1));
     }
 }
