@@ -20,6 +20,11 @@ class DecodeWayCounterTest {
 
     @Test
     void test3() {
-        assertThat(counter.numDecodings("06")).isEqualTo(0);
+        assertThat(counter.numDecodings("06")).isZero();
+    }
+
+    @Test
+    void test4() {
+        assertThat(counter.numDecodings("1111")).isEqualTo(5);
     }
 }
