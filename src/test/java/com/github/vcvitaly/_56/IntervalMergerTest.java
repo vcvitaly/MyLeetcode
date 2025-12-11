@@ -31,4 +31,16 @@ class IntervalMergerTest {
         assertThat(intervalMerger.merge(new int[][] {{1,4}}))
                 .isDeepEqualTo(new int[][] {{1,4}});
     }
+
+    @Test
+    void test5() {
+        assertThat(intervalMerger.merge(new int[][] {{1,1},{1,1}}))
+                .isDeepEqualTo(new int[][] {{1,1}});
+    }
+
+    @Test
+    void test6() {
+        assertThat(intervalMerger.merge(new int[][] {{1,3},{1,1}}))
+                .isDeepEqualTo(new int[][] {{1,3}});
+    }
 }
