@@ -13,16 +13,21 @@ public class MaxSubarrayFinder {
             prefixSums[i] = prefixSums[i-1] + nums[i];
         }
 
-        int maxSubArray = prefixSums[prefixSums.length-1];
-        int left = 0;
-        int right = nums.length - 1;
-        while (left < right) {
-            if (nums[left] >= nums[right]) {
-                right--;
-            } else {
-                left++;
+        int maxSubArray = Integer.MIN_VALUE;
+
+        int maxPrefixSumIndex = -1;
+        for (int i = 0; i < prefixSums.length; i++) {
+            if (prefixSums[i] > maxSubArray) {
+                maxSubArray = prefixSums[i];
+                maxPrefixSumIndex = i;
             }
-            maxSubArray = Math.max(maxSubArray, prefixSums[right] - prefixSums[left] + nums[left]);
+        }
+
+        for (int i = 0; i < maxPrefixSumIndex; i++) {
+            int withoutPrefix = prefixSums[maxPrefixSumIndex] - prefixSums[i];
+            if (withoutPrefix > maxSubArray) {
+                maxSubArray = withoutPrefix;
+            }
         }
 
         return maxSubArray;
