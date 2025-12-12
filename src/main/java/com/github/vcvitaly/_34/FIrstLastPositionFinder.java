@@ -13,6 +13,32 @@ public class FIrstLastPositionFinder {
             return new int[] {0, 0};
         }
 
-        return null;
+        int left = 0;
+        int right = nums.length - 1;
+
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            int num = nums[mid];
+            if (num == target) {
+                return new int[] {
+                        leftmostPosition(nums, target, mid),
+                        rightmostPosition(nums, target, mid),
+                };
+            } else if (num < target) {
+
+            } else if (num > target) {
+
+            }
+        }
+
+        return NOT_FOUND;
+    }
+
+    private int leftmostPosition(int[] nums, int target, int firstKnownIndex) {
+        return -1;
+    }
+
+    private int rightmostPosition(int[] nums, int target, int firstKnownIndex) {
+        return -1;
     }
 }
