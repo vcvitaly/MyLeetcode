@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class FIrstLastPositionFinderTest {
+class FirstLastPositionFinderTest {
 
-    private final FIrstLastPositionFinder finder = new FIrstLastPositionFinder();
+    private final FirstLastPositionFinder finder = new FirstLastPositionFinder();
 
     @Test
     void test1() {

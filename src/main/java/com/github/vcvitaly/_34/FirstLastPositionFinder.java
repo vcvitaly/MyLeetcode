@@ -1,6 +1,7 @@
 package com.github.vcvitaly._34;
 
-public class FIrstLastPositionFinder {
+// WIP
+public class FirstLastPositionFinder {
 
     private static final int[] NOT_FOUND = {-1, -1};
 
