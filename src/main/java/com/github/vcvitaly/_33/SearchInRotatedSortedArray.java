@@ -5,15 +5,20 @@ package com.github.vcvitaly._33;
  *
  * @author Vitalii Chura
  */
-// WIP
 public class SearchInRotatedSortedArray {
 
     public int search(int[] nums, int target) {
-        if (nums.length <= 2) {
+        if (nums.length == 1) {
             if (nums[0] == target) {
                 return 0;
             }
-            return nums.length == 2 && nums[1] == target ? 1 : -1;
+            return -1;
+        }
+        if (nums.length == 2) {
+            if (nums[0] == target) {
+                return 0;
+            }
+            return nums[1] == target ? 1 : -1;
         }
 
         int k = 0;
@@ -22,9 +27,13 @@ public class SearchInRotatedSortedArray {
 
         while (left <= right) {
             int mid = (right - left) / 2 + left;
-            int leftIndex = leftIndex(nums, mid);
-            if (nums[leftIndex] > nums[mid]) {
+            if (nums[leftIndex(nums, mid)] > nums[mid]) {
                 k = mid;
+                break;
+            }
+            int rightIndex = rightIndex(nums, mid);
+            if (nums[rightIndex] < nums[mid]) {
+                k = rightIndex;
                 break;
             }
             if (nums[mid] > nums[0]) {
@@ -34,8 +43,13 @@ public class SearchInRotatedSortedArray {
             }
         }
 
+        if (target == nums[k]) {
+            return k;
+        }
+
         boolean targetBeforePivot = target <= nums[leftIndex(nums, k)];
-        if (target >= nums[k] && targetBeforePivot) {
+        boolean targetAfterPivot = target > nums[k];
+        if (targetAfterPivot || targetBeforePivot) {
             if (target >= nums[0] && targetBeforePivot) {
                 left = 0;
                 right = leftIndex(nums, k);
