@@ -57,4 +57,29 @@ class MaxSubarrayFinderTest {
     void test10() { // to cover a case when I try to compute maxSubArray up to i
         assertThat(finder.maxSubArray(new int[] {-2,1,1,2})).isEqualTo(4);
     }
+
+    @Test
+    void test11() {
+        assertThat(finder.maxSubArray(new int[] {-2,1,-3,40,-100,30,1,-5,40,-100})).isEqualTo(66);
+    }
+
+    @Test
+    void test12() {
+        assertThat(finder.maxSubArray(new int[] {-100,40,-1,1,-100})).isEqualTo(40);
+    }
+
+    @Test
+    void test13() {
+        assertThat(finder.maxSubArray(new int[] {-100,40,-1,2,-100})).isEqualTo(41);
+    }
+
+    @Test
+    void test14() {
+        assertThat(finder.maxSubArray(new int[] {-10,-20,-30,2,-100})).isEqualTo(2);
+    }
+
+    @Test
+    void test15() {
+        assertThat(finder.maxSubArray(new int[] {-100,-50,10,10,10,-100,25})).isEqualTo(30);
+    }
 }
