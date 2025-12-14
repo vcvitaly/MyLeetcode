@@ -46,18 +46,23 @@ public class MaxSubarrayFinder {
         int maxSubArray = merged.getFirst() >= 0 ? merged.getFirst() : merged.get(1);
         int curSubArray = maxSubArray;
         int i = merged.getFirst() > 0 ? 1 : 2;
+        boolean skipNegative = false;
         while (i < merged.size()) {
             if (merged.get(i) < 0) {
-                if (Math.abs(merged.get(i)) < maxSubArray && i + 1 < merged.size() && maxSubArray + merged.get(i) + merged.get(i + 1) > maxSubArray) {
+                if (Math.abs(merged.get(i)) < curSubArray && i + 1 < merged.size() && curSubArray + merged.get(i) + merged.get(i + 1) > curSubArray) {
                     curSubArray += merged.get(i) + merged.get(i + 1);
-                    i += 2;
                 } else {
-                    i++;
+                    skipNegative = true;
                 }
             } else {
-                curSubArray = merged.get(i);
-                i++;
+                if (skipNegative) {
+                    curSubArray = merged.get(i);
+                    skipNegative = false;
+                } else if (merged.get(i) > curSubArray) {
+                    curSubArray = merged.get(i);
+                }
             }
+            i++;
             if (curSubArray > maxSubArray) {
                 maxSubArray = curSubArray;
             }

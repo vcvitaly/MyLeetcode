@@ -92,4 +92,14 @@ class MaxSubarrayFinderTest {
     void test17() {
         assertThat(finder.maxSubArray(new int[] {-1,-2})).isEqualTo(-1);
     }
+
+    @Test
+    void test18() {
+        assertThat(finder.maxSubArray(new int[] {2,-1,0,0,-1,2,2,-2,2})).isEqualTo(4);
+    }
+
+    @Test
+    void test19() {
+        assertThat(finder.maxSubArray(new int[] {-9,-2,1,8,7,-6,4,9,-9,-5,0,5,-2,5,9,7})).isEqualTo(33);
+    }
 }
