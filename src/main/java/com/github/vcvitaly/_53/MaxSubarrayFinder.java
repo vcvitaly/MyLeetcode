@@ -1,9 +1,8 @@
 package com.github.vcvitaly._53;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
-// WIP
 public class MaxSubarrayFinder {
 
     public int maxSubArray(int[] nums) {
@@ -12,7 +11,7 @@ public class MaxSubarrayFinder {
         }
 
 
-        final List<Integer> merged = new LinkedList<>();
+        final List<Integer> merged = new ArrayList<>();
 
         int max = nums[0];
         boolean mergedPositive = nums[0] >= 0;
@@ -46,26 +45,18 @@ public class MaxSubarrayFinder {
         int maxSubArray = merged.getFirst() >= 0 ? merged.getFirst() : merged.get(1);
         int curSubArray = maxSubArray;
         int i = merged.getFirst() > 0 ? 1 : 2;
-        boolean skipNegative = false;
+
         while (i < merged.size()) {
-            if (merged.get(i) < 0) {
-                if (Math.abs(merged.get(i)) < curSubArray && i + 1 < merged.size() && curSubArray + merged.get(i) + merged.get(i + 1) > curSubArray) {
-                    curSubArray += merged.get(i) + merged.get(i + 1);
-                } else {
-                    skipNegative = true;
+            int cur = merged.get(i);
+            if (cur + curSubArray > 0) {
+                curSubArray = cur + curSubArray;
+                if (curSubArray > maxSubArray) {
+                    maxSubArray = curSubArray;
                 }
             } else {
-                if (skipNegative) {
-                    curSubArray = merged.get(i);
-                    skipNegative = false;
-                } else if (merged.get(i) > curSubArray) {
-                    curSubArray = merged.get(i);
-                }
+                curSubArray = 0;
             }
             i++;
-            if (curSubArray > maxSubArray) {
-                maxSubArray = curSubArray;
-            }
         }
 
         return maxSubArray;
