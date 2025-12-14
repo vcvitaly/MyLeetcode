@@ -14,7 +14,7 @@ public class MaxSubarrayFinder {
 
         final List<Integer> merged = new LinkedList<>();
 
-        int max = Integer.MIN_VALUE;
+        int max = nums[0];
         boolean mergedPositive = nums[0] >= 0;
         int mergedSum = nums[0];
         for (int i = 1; i < nums.length; i++) {
@@ -51,18 +51,16 @@ public class MaxSubarrayFinder {
                 if (Math.abs(merged.get(i)) < maxSubArray && i + 1 < merged.size() && maxSubArray + merged.get(i) + merged.get(i + 1) > maxSubArray) {
                     curSubArray += merged.get(i) + merged.get(i + 1);
                     i += 2;
+                } else {
+                    i++;
                 }
             } else {
-                if (merged.get(i) > maxSubArray) {
-                    maxSubArray = merged.get(i);
-                } else {
-                    curSubArray = merged.get(i);
-                }
+                curSubArray = merged.get(i);
+                i++;
             }
             if (curSubArray > maxSubArray) {
                 maxSubArray = curSubArray;
             }
-            i++;
         }
 
         return maxSubArray;
