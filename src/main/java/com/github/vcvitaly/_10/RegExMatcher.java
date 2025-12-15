@@ -3,17 +3,27 @@ package com.github.vcvitaly._10;
 import java.util.*;
 import java.util.function.Predicate;
 
+// WIP
 public class RegExMatcher {
 
     private static final Token DOT_WILDCARD = new Token('.', true);
 
     public boolean isMatch(String s, String p) {
         final List<Token> tokens = getMergedTokens(p);
-        return isMatch(s, 0, tokens, 0);
+        final Map<Integer, Integer> nonWildcardTokensRemaningAtPos = new HashMap<>();
+        nonWildcardTokensRemaningAtPos.put(tokens.size() - 1, tokens.getLast().wildcard() ? 0 : 1);
+        for (int i = tokens.size() - 2; i >= 0; i--) {
+            nonWildcardTokensRemaningAtPos.put(
+                    i, tokens.get(i).wildcard() ?
+                            nonWildcardTokensRemaningAtPos.get(i + 1) :
+                            nonWildcardTokensRemaningAtPos.get(i + 1) + 1
+            );
+        }
+        return isMatch(s, 0, tokens, 0, nonWildcardTokensRemaningAtPos);
     }
 
-    private boolean isMatch(String s, int sIndex, List<Token> tokens, int tIndex) {
-        int nonWildCardTokenCount = (int) tokens.stream().skip(tIndex).filter(Predicate.not(Token::wildcard)).count();
+    private boolean isMatch(String s, int sIndex, List<Token> tokens, int tIndex, Map<Integer, Integer> nonWildcardTokensRemaningAtPos) {
+        int nonWildCardTokenCount = nonWildcardTokensRemaningAtPos.get(tIndex);
         if (nonWildCardTokenCount > s.length()) {
             return false;
         }
@@ -23,7 +33,7 @@ public class RegExMatcher {
             if (token.wildcard() && sIndex + nonWildCardTokenCount >= s.length()) {
                 tIndex++;
             } else {
-                if (tIndex + 1 < tokens.size() && isMatch(s, sIndex, tokens, tIndex + 1)) {
+                if (tIndex + 1 < tokens.size() && isMatch(s, sIndex, tokens, tIndex + 1, nonWildcardTokensRemaningAtPos)) {
                     return true;
                 }
                 if (!token.matches(curChar)) {
