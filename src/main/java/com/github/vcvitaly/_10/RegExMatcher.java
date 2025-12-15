@@ -9,37 +9,43 @@ public class RegExMatcher {
 
     public boolean isMatch(String s, String p) {
         final List<Token> tokens = getMergedTokens(p);
-        int nonWildCardTokenCount = (int) tokens.stream().filter(Predicate.not(Token::wildcard)).count();
+        return isMatch(s, 0, tokens, 0);
+    }
+
+    private boolean isMatch(String s, int sIndex, List<Token> tokens, int tIndex) {
+        int nonWildCardTokenCount = (int) tokens.stream().skip(tIndex).filter(Predicate.not(Token::wildcard)).count();
         if (nonWildCardTokenCount > s.length()) {
             return false;
         }
-        int sIndex = 0;
-        int tIndex = 0;
         while (sIndex < s.length()) {
             final char curChar = s.charAt(sIndex);
             final Token token = tokens.get(tIndex);
             if (token.wildcard() && sIndex + nonWildCardTokenCount >= s.length()) {
                 tIndex++;
-                continue;
-            }
-            if (!token.matches(curChar)) {
-                if (token.wildcard()) {
-                    tIndex++;
-                    if (tIndex >= tokens.size()) {
+            } else {
+                if (tIndex + 1 < tokens.size() && isMatch(s, sIndex, tokens, tIndex + 1)) {
+                    return true;
+                }
+                if (!token.matches(curChar)) {
+                    if (token.wildcard()) {
+                        tIndex++;
+                        if (tIndex >= tokens.size()) {
+                            return false;
+                        }
+                    } else {
                         return false;
                     }
-                    continue;
-                }
-                return false;
-            }
-            if (!token.wildcard()) {
-                nonWildCardTokenCount--;
-            }
-            sIndex++;
-            if (!token.wildcard() || sIndex + nonWildCardTokenCount >= s.length()) {
-                tIndex++;
-                if (tIndex >= tokens.size()) {
-                    return sIndex >= s.length();
+                } else {
+                    if (!token.wildcard()) {
+                        nonWildCardTokenCount--;
+                    }
+                    sIndex++;
+                    if (!token.wildcard() || sIndex + nonWildCardTokenCount >= s.length()) {
+                        tIndex++;
+                        if (tIndex >= tokens.size()) {
+                            return sIndex >= s.length();
+                        }
+                    }
                 }
             }
         }
