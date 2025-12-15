@@ -1,13 +1,14 @@
 package com.github.vcvitaly._10;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class RegExMatcher {
 
+    private static final Token DOT_WILDCARD = new Token('.', true);
+
     public boolean isMatch(String s, String p) {
-        final List<Token> tokens = getTokens(p);
+        final List<Token> tokens = getMergedTokens(p);
         int nonWildCardTokenCount = (int) tokens.stream().filter(Predicate.not(Token::wildcard)).count();
         if (nonWildCardTokenCount > s.length()) {
             return false;
@@ -45,30 +46,61 @@ public class RegExMatcher {
         return nonWildCardTokenCount <= 0;
     }
 
+    private List<Token> getMergedTokens(String p) {
+        final List<Token> tokens = getTokens(p);
+        final List<Token> mergedTokens = new ArrayList<>();
+        final SequencedSet<Token> window = new LinkedHashSet<>();
+        for (final Token token : tokens) {
+            if (token.wildcard()) {
+                window.add(token);
+            } else {
+                mergedTokens.addAll(compressTokenWindow(window));
+                window.clear();
+                mergedTokens.add(token);
+            }
+        }
+
+        if (!window.isEmpty()) {
+            mergedTokens.addAll(compressTokenWindow(window));
+        }
+
+        return mergedTokens;
+    }
+
+    private SequencedSet<Token> compressTokenWindow(SequencedSet<Token> window) {
+        if (window.contains(DOT_WILDCARD)) {
+            return new LinkedHashSet<>(Set.of(DOT_WILDCARD));
+        } else {
+            return window;
+        }
+    }
+
     private List<Token> getTokens(String p) {
         final List<Token> tokens = new ArrayList<>();
-        Token token = nextToken(p, 0);
-        if (token == null) {
-            return List.of();
-        }
-        tokens.add(token);
-        while ((token = nextToken(p, token.endsAt() + 1)) != null) {
+        int i = 0;
+        Token token;
+        while ((token = nextToken(p, i)) != null) {
             tokens.add(token);
+            i += token.wildcard() ? 2 : 1;
         }
-        return tokens;
+        return tokens.isEmpty() ? List.of() : tokens;
     }
 
     private Token nextToken(String p, int at) {
         if (at < p.length()) {
             final boolean repeatable = at + 1 < p.length() && p.charAt(at + 1) == '*';
-            return new Token(p.charAt(at), repeatable, at + (repeatable ? 1 : 0));
+            return new Token(p.charAt(at), repeatable);
         }
         return null;
     }
 
-    public record Token(char c, boolean wildcard, int endsAt) {
+    public record Token(char c, boolean wildcard) {
         private boolean matches(char other) {
-            return other == c || c == '.';
+            return other == c || matchesAny();
+        }
+
+        private boolean matchesAny() {
+            return c == '.';
         }
 
         @Override
