@@ -2,7 +2,6 @@ package com.github.vcvitaly._10;
 
 import java.util.*;
 
-// WIP
 public class RegExMatcher {
 
     private static final Token DOT_WILDCARD = new Token('.', true);
