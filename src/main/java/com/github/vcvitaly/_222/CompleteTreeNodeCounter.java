@@ -13,6 +13,20 @@ public class CompleteTreeNodeCounter {
             return 1;
         }
 
-        return 0;
+        int height = 0;
+        TreeNode cur = root;
+        while (cur != null) {
+            height++;
+            cur = cur.left;
+        }
+
+        return countNodes(root, height - 1, 1);
+    }
+
+    private int countNodes(TreeNode root, int targetHeight, int height) {
+        if (height == targetHeight) {
+            return 1 + (root.left == null ? 0 : 1) + (root.right == null ? 0 : 1);
+        }
+        return 1 + countNodes(root.left, targetHeight, height + 1) + countNodes(root.right, targetHeight, height + 1);
     }
 }
