@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-// WIP
 public class IntervalMerger {
 
     public int[][] merge(int[][] intervals) {

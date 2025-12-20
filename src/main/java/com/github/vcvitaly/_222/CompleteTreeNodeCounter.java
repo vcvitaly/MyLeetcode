@@ -2,7 +2,6 @@ package com.github.vcvitaly._222;
 
 import com.github.vcvitaly.common.TreeNode;
 
-// WIP
 public class CompleteTreeNodeCounter {
 
     public int countNodes(TreeNode root) {
