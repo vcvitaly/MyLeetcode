@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class WordBreakDeterminatorTest {
 
-    private final WordBreakDeterminator determinator = new TrieWordBreakDeterminator();
+    private final WordBreakDeterminator determinator = new TrielessWordBreakDeterminator();
 
     @Test
     void test1() {
@@ -95,5 +95,34 @@ class WordBreakDeterminatorTest {
         assertThat(determinator.wordBreak(
                 s, List.of("aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa","aaaaaaaaaa","ba")
         )).isFalse();
+    }
+
+    @Test
+    @Timeout(value = 1, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
+    void test13() {
+        final String s = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
+                "baaab" +
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+        assertThat(determinator.wordBreak(
+                s, List.of("aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa","aaaaaaaaaa","ba")
+        )).isTrue();
+    }
+
+    @Test
+    @Timeout(value = 1, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
+    void test14() {
+        final String s = "aaaaabaabaaaaa";
+        assertThat(determinator.wordBreak(
+                s, List.of("aa","aaa","aaaa","aaaaa", "ba")
+        )).isFalse();
+    }
+
+    @Test
+    @Timeout(value = 1, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
+    void test15() {
+        final String s = "aaaaaaaaaaaaaaaaaaaabaabaaaaa";
+        assertThat(determinator.wordBreak(
+                s, List.of("aa","aaa","aaaa","aaaaa", "ba", "aaabaab", "aaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaa")
+        )).isTrue();
     }
 }
