@@ -22,4 +22,14 @@ class StringScramblerTest {
     void test3() {
         assertThat(scrambler.isScramble("a", "a")).isTrue();
     }
+
+    @Test
+    void test4() {
+        assertThat(scrambler.isScramble("ab", "ac")).isFalse();
+    }
+
+    @Test
+    void test5() {
+        assertThat(scrambler.isScramble("abcd", "cdba")).isTrue();
+    }
 }
