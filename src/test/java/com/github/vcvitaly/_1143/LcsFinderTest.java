@@ -22,4 +22,19 @@ class LcsFinderTest {
     void test3() {
         assertThat(finder.longestCommonSubsequence("abc", "def")).isEqualTo(0);
     }
+
+    @Test
+    void test4() {
+        assertThat(finder.longestCommonSubsequence("ace", "abcde")).isEqualTo(3);
+    }
+
+    @Test
+    void test5() {
+        assertThat(finder.longestCommonSubsequence("abcde", "aec")).isEqualTo(2);
+    }
+
+    /*@Test
+    void test6() {
+        assertThat(finder.longestCommonSubsequence("ababadadaddx", "ababadadaddy")).isEqualTo(2);
+    }*/
 }
