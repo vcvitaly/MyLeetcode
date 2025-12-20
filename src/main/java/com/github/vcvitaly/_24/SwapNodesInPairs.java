@@ -7,6 +7,7 @@ import com.github.vcvitaly.common.ListNode;
  *
  * @author Vitalii Chura
  */
+// WIP
 public class SwapNodesInPairs {
 
     public ListNode swapPairs(ListNode head) {

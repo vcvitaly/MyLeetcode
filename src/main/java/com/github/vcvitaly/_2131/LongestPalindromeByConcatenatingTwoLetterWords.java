@@ -19,6 +19,7 @@ import static java.util.stream.Collectors.groupingBy;
  *
  * @author Vitalii Chura
  */
+// WIP
 public class LongestPalindromeByConcatenatingTwoLetterWords {
 
     public int longestPalindrome(String[] words) {

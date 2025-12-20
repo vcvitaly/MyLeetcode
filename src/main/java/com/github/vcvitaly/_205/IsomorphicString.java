@@ -15,6 +15,7 @@ import java.util.TreeMap;
  *
  * @author Vitalii Chura
  */
+// WIP
 public class IsomorphicString {
 
     public boolean isIsomorphic(String s, String t) {

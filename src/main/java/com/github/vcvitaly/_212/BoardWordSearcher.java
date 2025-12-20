@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+// WIP
 public class BoardWordSearcher {
 
     // Build a trie from words
