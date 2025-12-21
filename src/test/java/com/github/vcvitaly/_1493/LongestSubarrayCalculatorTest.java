@@ -28,7 +28,13 @@ class LongestSubarrayCalculatorTest {
 
     @Test
     void test4() {
-        assertThat(calculator.longestSubarray(new int[] {0,1,1,1,0,1,1,0,1,1,1,1}))
-                .isEqualTo(6);
+        assertThat(calculator.longestSubarray(new int[] {0,1,1,1,0,1,1,0,1,1,1,1,0,1,1,1,1,1}))
+                .isEqualTo(9);
+    }
+
+    @Test
+    void test5() {
+        assertThat(calculator.longestSubarray(new int[] {1,0,0,1,1}))
+                .isEqualTo(2);
     }
 }
