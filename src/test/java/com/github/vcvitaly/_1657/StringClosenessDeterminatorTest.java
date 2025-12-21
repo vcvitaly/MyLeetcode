@@ -20,6 +20,16 @@ class StringClosenessDeterminatorTest {
 
     @Test
     void test3() {
-        assertThat(determinator.closeStrings("cabbba", "aabbccca")).isTrue();
+        assertThat(determinator.closeStrings("cabbba", "abbccc")).isTrue();
+    }
+
+    @Test
+    void test4() {
+        assertThat(determinator.closeStrings("aabaa", "baaaa")).isTrue();
+    }
+
+    @Test
+    void test5() {
+        assertThat(determinator.closeStrings("aabbb", "bbaaa")).isTrue();
     }
 }
