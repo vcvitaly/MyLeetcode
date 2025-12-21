@@ -1,12 +1,6 @@
 package com.github.vcvitaly._168;
 
-/**
- * ExcelSheetColumnTitle.
- *
- * @author Vitalii Chura
- */
-// WIP
-public class ExcelSheetColumnTitle {
+public class ExcelSheetColumnTitleConverter {
 
     public String convertToTitle(int columnNumber) {
         StringBuilder sb = new StringBuilder();
@@ -20,6 +14,6 @@ public class ExcelSheetColumnTitle {
     }
 
     private char toCharLetter(int intLetter) {
-        return (char) (64 + intLetter);
+        return (char) ('A' + intLetter - 1);
     }
 }
