@@ -25,6 +25,18 @@ class CombinationSumFinderTest {
     @Test
     void test3() {
         assertThat(finder.combinationSum(new int[]{2}, 1))
-                .isEmpty();
+                .containsExactly(List.of());
+    }
+
+    @Test
+    void test4() {
+        assertThat(finder.combinationSum(new int[]{2}, 2))
+                .containsExactlyInAnyOrder(List.of(2));
+    }
+
+    @Test
+    void test5() {
+        assertThat(finder.combinationSum(new int[]{2,3}, 1))
+                .containsExactlyInAnyOrder(List.of());
     }
 }
