@@ -17,4 +17,9 @@ class CountSaySeqFinderTest {
     void test2() {
         assertThat(finder.countAndSay(1)).isEqualTo("1");
     }
+
+    @Test
+    void test3() {
+        assertThat(finder.countAndSay(5)).isEqualTo("111221");
+    }
 }
