@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-// WIP
+// TODO faster solution
 public class CombinationSumFinder {
 
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
@@ -16,16 +17,19 @@ public class CombinationSumFinder {
                 .boxed().collect(Collectors.toCollection(ArrayList::new));
 
         if (candidatesList.isEmpty()) {
-            return List.of(List.of());
+            return List.of();
         }
 
         candidatesList.sort(Comparator.naturalOrder());
 
-        return List.copyOf(combinationSum(candidatesList, 0, target));
+        List<List<Integer>> result = combinationSum(candidatesList, 0, target);
+        return result.isEmpty() || result.getFirst().isEmpty() ? List.of() : result;
     }
 
     private List<List<Integer>> combinationSum(List<Integer> candidatesList, int from, int target) {
-        final List<List<Integer>> result = new ArrayList<>();
+        if (from == candidatesList.size()) {
+            return List.of(List.of());
+        }
 
         if (from == candidatesList.size() - 1) {
             if (candidatesList.getLast() == target) {
@@ -38,6 +42,8 @@ public class CombinationSumFinder {
             }
             return List.of(List.of());
         }
+
+        final List<List<Integer>> result = new ArrayList<>();
 
         for (int i = from; i < candidatesList.size(); i++) {
             int candidate = candidatesList.get(i);
@@ -55,9 +61,10 @@ public class CombinationSumFinder {
                 if (remainder == 0) {
                     candidateCombinations.add(head);
                 } else {
-                    List<List<Integer>> tails = combinationSum(candidatesList, from + 1, remainder);
+                    List<List<Integer>> tails = combinationSum(candidatesList, i + 1, remainder);
                     if (!tails.isEmpty()) {
                         List<List<Integer>> candidateTimesCombinations = tails.stream()
+                                .filter(Predicate.not(List::isEmpty))
                                 .map(tail -> {
                                     List<Integer> combination = new ArrayList<>(head);
                                     combination.addAll(tail);
