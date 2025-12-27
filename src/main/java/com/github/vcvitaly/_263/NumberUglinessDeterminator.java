@@ -1,6 +1,6 @@
 package com.github.vcvitaly._263;
 
-// WIP
+// WIP math
 public class NumberUglinessDeterminator {
 
     public boolean isUgly(int n) {
