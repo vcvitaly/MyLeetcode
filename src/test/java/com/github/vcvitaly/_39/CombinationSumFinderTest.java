@@ -45,4 +45,10 @@ class CombinationSumFinderTest {
         assertThat(finder.combinationSum(new int[]{2}, 9))
                 .containsExactlyInAnyOrder(List.of());
     }
+
+    @Test
+    void test7() {
+        assertThat(finder.combinationSum(new int[]{3}, 8))
+                .containsExactlyInAnyOrder(List.of());
+    }
 }
