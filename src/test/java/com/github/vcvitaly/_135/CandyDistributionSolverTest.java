@@ -9,7 +9,7 @@ class CandyDistributionSolverTest {
     private final CandyDistributionSolver solver = new CandyDistributionSolver();
 
     @Test
-    void test1() {
+    void test1_fallingRaising() {
         assertThat(solver.candy(new int[] {1,0,2}))
                 .isEqualTo(5);
     }
@@ -63,7 +63,7 @@ class CandyDistributionSolverTest {
     }
 
     @Test
-    void test9() {
+    void test9_fallingRaising() {
         assertThat(solver.candy(new int[] {1,0,1}))
                 .isEqualTo(5);
     }
@@ -75,7 +75,7 @@ class CandyDistributionSolverTest {
     }
 
     @Test
-    void test11() {
+    void test11_fallingRaising() {
         assertThat(solver.candy(new int[] {1,0,1,2}))
                 .isEqualTo(8);
     }
@@ -115,4 +115,22 @@ class CandyDistributionSolverTest {
         assertThat(solver.candy(new int[] {7,6,6,6,6,2}))
                 .isEqualTo(8);
     }
+
+    @Test
+    void test18_raisingFalling() {
+        assertThat(solver.candy(new int[] {0,1,2,1,0}))
+                .isEqualTo(9);
+    }
+
+    /*@Test
+    void test19_fallingEqualityFalling() {
+        assertThat(solver.candy(new int[] {7,6,5,5,5,4,3,2}))
+                .isEqualTo(8);
+    }
+
+    @Test
+    void test19_raisingEqualityRaising() {
+        assertThat(solver.candy(new int[] {7,6,6,6,6,2}))
+                .isEqualTo(8);
+    }*/
 }
