@@ -21,7 +21,9 @@ public class LRUCache {
         if (Objects.isNull(node)) {
             return NOT_FOUND;
         }
-        moveToTail(node);
+        if (capacity != 1) {
+            moveToTail(node);
+        }
         return node.val;
     }
 
