@@ -19,6 +19,6 @@ class LRUCacheTest {
         lruCache.put(4, 4);
         assertThat(lruCache.get(1)).isEqualTo(-1);
         assertThat(lruCache.get(3)).isEqualTo(3);
-        assertThat(lruCache.get(3)).isEqualTo(4);
+        assertThat(lruCache.get(4)).isEqualTo(4);
     }
 }

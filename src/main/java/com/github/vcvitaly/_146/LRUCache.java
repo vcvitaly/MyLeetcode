@@ -6,6 +6,7 @@ import java.util.Objects;
 
 public class LRUCache {
 
+    private static final int NOT_FOUND = -1;
     private final Map<Integer, DoublyLinkedListNode> m = new HashMap<>();
     private DoublyLinkedListNode head;
     private DoublyLinkedListNode tail;
@@ -16,7 +17,12 @@ public class LRUCache {
     }
 
     public int get(int key) {
-        return m.get(key).val;
+        DoublyLinkedListNode node = m.get(key);
+        if (Objects.isNull(node)) {
+            return NOT_FOUND;
+        }
+        moveToTail(node);
+        return node.val;
     }
 
     public void put(int key, int value) {
@@ -30,7 +36,7 @@ public class LRUCache {
                 node = new DoublyLinkedListNode(key, value);
                 if (m.size() < capacity) {
                     m.put(key, node);
-                    tail.next = node;
+                    reassignTail(node);
                 } else {
                     m.remove(head.key);
                     m.put(key, node);
@@ -38,16 +44,33 @@ public class LRUCache {
                         head = node;
                         tail = node;
                     } else {
-
+                        head = head.next;
+                        reassignTail(node);
                     }
                 }
             } else {
                 node.val = value;
-                if (m.size() == 1) {
-                    return;
+                if (m.size() != 1) {
+                    moveToTail(node);
                 }
             }
         }
+    }
+
+    private void moveToTail(DoublyLinkedListNode node) {
+        if (node.prev != null) {
+            node.prev.next = node.next;
+        } else {
+            head = node.next;
+        }
+        reassignTail(node);
+        node.next = null;
+    }
+
+    private void reassignTail(DoublyLinkedListNode node) {
+        tail.next = node;
+        node.prev = tail;
+        tail = node;
     }
 
     private static class DoublyLinkedListNode {
