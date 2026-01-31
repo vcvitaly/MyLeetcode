@@ -1,16 +1,14 @@
 package com.github.vcvitaly._146;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class LRUCache {
 
     private static final int NOT_FOUND = -1;
     private final Map<Integer, DoublyLinkedListNode> m = new HashMap<>();
-    private DoublyLinkedListNode head;
-    private DoublyLinkedListNode tail;
-    private final int capacity;
+    DoublyLinkedListNode head;
+    DoublyLinkedListNode tail;
+    final int capacity;
 
     public LRUCache(int capacity) {
         this.capacity = capacity;
@@ -47,6 +45,7 @@ public class LRUCache {
                         tail = node;
                     } else {
                         head = head.next;
+                        head.prev = null;
                         reassignTail(node);
                     }
                 }
@@ -100,7 +99,16 @@ public class LRUCache {
 
         @Override
         public String toString() {
-            return "DoublyLinkedListNode{key=%d, val=%d}".formatted(key, val);
+            return "DoublyLinkedListNode{key=%d, linkedList=%s}".formatted(key, getIntegers(this));
+        }
+
+        public static List<Integer> getIntegers(DoublyLinkedListNode node) {
+            List<Integer> result = new ArrayList<>();
+            while (node != null) {
+                result.add(node.val);
+                node = node.next;
+            }
+            return result;
         }
     }
 }
