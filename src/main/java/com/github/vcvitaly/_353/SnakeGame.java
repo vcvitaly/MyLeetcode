@@ -15,7 +15,7 @@ public class SnakeGame {
     private final int width;
     private final int height;
     private final int[][] food;
-    private SequencedSet<int[]> snakeBody = new LinkedHashSet<>(List.of(new int[] {0, 0}));
+    private final SequencedSet<Coordinate> snakeBody = new LinkedHashSet<>(List.of(new Coordinate(0, 0)));
     private int foodIndex = 0;
 
     public SnakeGame(int width, int height, int[][] food) {
@@ -25,14 +25,14 @@ public class SnakeGame {
     }
 
     public int move(String direction) {
-        final int[] head = snakeBody.getLast();
+        final Coordinate head = snakeBody.getLast();
         final int[] directionModifier = DIRECTION_MODIFIERS.get(direction);
-        final int[] newHead = new int[] {head[0] + directionModifier[0], head[1] + directionModifier[1]};
+        final Coordinate newHead = new Coordinate(head.row() + directionModifier[0], head.col() + directionModifier[1]);
         if (invalidMove(newHead)) {
             return ENDGAME;
         }
         snakeBody.add(newHead);
-        if (foodIndex < food.length && Arrays.equals(newHead, food[foodIndex])) {
+        if (foodIndex < food.length && newHead.row() == food[foodIndex][0] && newHead.col() == food[foodIndex][1]) {
             foodIndex++;
         } else {
             snakeBody.remove(snakeBody.getFirst());
@@ -41,14 +41,16 @@ public class SnakeGame {
         return snakeBody.size() - 1;
     }
 
-    private boolean invalidMove(int[] head) {
+    private boolean invalidMove(Coordinate head) {
         return ranIntoWall(head) || snakeBody.contains(head);
     }
 
-    private boolean ranIntoWall(int[] head) {
-        return head[0] < 0 ||
-                head[0] >= width ||
-                head[1] < 0 ||
-                head[1] >= height;
+    private boolean ranIntoWall(Coordinate head) {
+        return head.row() < 0 ||
+                head.row() >= height ||
+                head.col() < 0 ||
+                head.col() >= width;
     }
+
+    private record Coordinate(int row, int col) {}
 }
