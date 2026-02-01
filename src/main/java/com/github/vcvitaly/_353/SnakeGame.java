@@ -31,18 +31,17 @@ public class SnakeGame {
         if (invalidMove(newHead)) {
             return ENDGAME;
         }
-        snakeBody.add(newHead);
         if (foodIndex < food.length && newHead.row() == food[foodIndex][0] && newHead.col() == food[foodIndex][1]) {
             foodIndex++;
         } else {
             snakeBody.remove(snakeBody.getFirst());
         }
-
+        snakeBody.add(newHead);
         return snakeBody.size() - 1;
     }
 
     private boolean invalidMove(Coordinate head) {
-        return ranIntoWall(head) || snakeBody.contains(head);
+        return ranIntoWall(head) || (snakeBody.contains(head) && !snakeBody.getFirst().equals(head));
     }
 
     private boolean ranIntoWall(Coordinate head) {

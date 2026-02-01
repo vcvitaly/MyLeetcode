@@ -28,6 +28,15 @@ class SnakeGameTest {
         );
     }
 
+    @Test
+    void test3() {
+        snakeGame = new SnakeGame(3, 3, new int[][] {{2,0},{0,0},{0,2},{2,2}});
+        runTestHarness(
+                new String[] {"D","D","R","U","U","L","D","R","R","U","L","D"},
+                List.of(0,1,1,1,1,2,2,2,2,3,3,3)
+        );
+    }
+
     private void runTestHarness(String[] directions, List<Integer> output) {
         for (int i = 0; i < directions.length; i++) {
             String direction = directions[i];
