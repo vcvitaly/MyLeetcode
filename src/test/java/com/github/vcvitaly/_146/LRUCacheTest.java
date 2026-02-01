@@ -1,9 +1,10 @@
 package com.github.vcvitaly._146;
 
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -63,28 +64,60 @@ class LRUCacheTest {
         if (action.length != input.length || input.length != expected.length) {
             throw new IllegalStateException("Array sizes are unaligned");
         }
-        SoftAssertions softly = new SoftAssertions();
+        final List<Integer> result = new ArrayList<>();
         for (int i = 0; i < action.length; i++) {
             System.out.printf("Action=%s,input=%s,expected=%s -> ", action[i], Arrays.toString(input[i]), expected[i]);
             if (action[i] == "LRUCache") {
                 lruCache = new LRUCache(input[i][0]);
                 printCacheState(lruCache, null);
+                result.add(null);
             } else if (action[i] == "put") {
                 lruCache.put(input[i][0], input[i][1]);
                 printCacheState(lruCache, null);
+                result.add(null);
             } else if (action[i] == "get") {
                 int actual = lruCache.get(input[i][0]);
-                softly.assertThat(actual).isEqualTo(expected[i]);
                 printCacheState(lruCache, actual);
+                result.add(actual);
             } else {
                 throw new IllegalStateException("Illegal action: " + action[i]);
             }
+            if (lruCache.head != null) {
+                assertThat(lruCache.head.prev).isNull();
+                assertThat(lruCache.tail.next).isNull();
+            }
+            assertThat(getKeys(lruCache.head)).containsExactlyInAnyOrderElementsOf(lruCache.m.keySet());
         }
-        softly.assertAll();
+        assertThat(result).containsExactly(expected);
     }
 
     private void printCacheState(LRUCache lruCache, Integer actual) {
-        String state = "LRUCache{head=%s, tail=%s} after returning %d".formatted(lruCache.head, lruCache.tail, actual);
+        String state = "LRUCache{head=%s, tail=%s} after returning %d".formatted(toString(lruCache.head), toString(lruCache.tail), actual);
         System.out.println(state);
+    }
+
+    static List<Integer> getVals(LRUCache.DoublyLinkedListNode node) {
+        List<Integer> result = new ArrayList<>();
+        while (node != null) {
+            result.add(node.val);
+            node = node.next;
+        }
+        return result;
+    }
+
+    static List<Integer> getKeys(LRUCache.DoublyLinkedListNode node) {
+        List<Integer> result = new ArrayList<>();
+        while (node != null) {
+            result.add(node.key);
+            node = node.next;
+        }
+        return result;
+    }
+
+    static String toString(LRUCache.DoublyLinkedListNode node) {
+        if (node == null) {
+            return "null";
+        }
+        return "DoublyLinkedListNode{key=%d, linkedList=%s}".formatted(node.key, getKeys(node));
     }
 }

@@ -5,7 +5,7 @@ import java.util.*;
 public class LRUCache {
 
     private static final int NOT_FOUND = -1;
-    private final Map<Integer, DoublyLinkedListNode> m = new HashMap<>();
+    final Map<Integer, DoublyLinkedListNode> m = new HashMap<>();
     DoublyLinkedListNode head;
     DoublyLinkedListNode tail;
     final int capacity;
@@ -59,13 +59,17 @@ public class LRUCache {
     }
 
     private void moveToTail(DoublyLinkedListNode node) {
-        if (node.prev != null) {
-            node.prev.next = node.next;
-        } else {
-            head = node.next;
+        if (node.key != tail.key) {
+            if (node.prev != null) {
+                node.prev.next = node.next;
+                node.next.prev = node.prev;
+            } else {
+                head = node.next;
+                head.prev = null;
+            }
+            reassignTail(node);
+            node.next = null;
         }
-        reassignTail(node);
-        node.next = null;
     }
 
     private void reassignTail(DoublyLinkedListNode node) {
@@ -74,41 +78,15 @@ public class LRUCache {
         tail = node;
     }
 
-    private static class DoublyLinkedListNode {
+    static class DoublyLinkedListNode {
         int key;
-        private int val;
-        private DoublyLinkedListNode prev;
-        private DoublyLinkedListNode next;
+        int val;
+        DoublyLinkedListNode prev;
+        DoublyLinkedListNode next;
 
         public DoublyLinkedListNode(int key, int val) {
             this.key = key;
             this.val = val;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (o == null || getClass() != o.getClass()) return false;
-            DoublyLinkedListNode node = (DoublyLinkedListNode) o;
-            return key == node.key && val == node.val;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(key, val);
-        }
-
-        @Override
-        public String toString() {
-            return "DoublyLinkedListNode{key=%d, linkedList=%s}".formatted(key, getIntegers(this));
-        }
-
-        public static List<Integer> getIntegers(DoublyLinkedListNode node) {
-            List<Integer> result = new ArrayList<>();
-            while (node != null) {
-                result.add(node.val);
-                node = node.next;
-            }
-            return result;
         }
     }
 }
