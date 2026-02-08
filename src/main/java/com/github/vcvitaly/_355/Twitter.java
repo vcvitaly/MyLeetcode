@@ -18,25 +18,44 @@ public class Twitter {
     }
 
     public List<Integer> getNewsFeed(int userId) {
-        final Set<Integer> followees = followeesByUser.get(userId);
-        if (followees == null || followees.isEmpty()) {
-            return List.of();
-        }
-        final List<Integer> resultTweets = new ArrayList<>(TOP_K_COUNT);
+        final List<Integer> followeesSnapshot = new ArrayList<>(followeesByUser.getOrDefault(userId, Set.of()));
+        followeesSnapshot.add(userId);
+        final List<Integer> resultTweets = new ArrayList<>();
         final Map<Integer, Integer> positionByUser = new HashMap<>();
         for (int i = 0; i < TOP_K_COUNT; i++) {
             int maxTweet = -1;
-            int maxTweetAuthorId = 0;
-            for (Integer followee : followees) {
-                Integer nextIndexByFollowee = positionByUser.computeIfAbsent(followee, k -> tweetsByUser.get(k).size() - 1);
+            int maxTweetAuthor = -1;
+            for (int j = followeesSnapshot.size() - 1; j >= 0; j--) {
+                Integer followee = followeesSnapshot.get(j);
+                int nextIndexByFollowee = positionByUser.computeIfAbsent(followee, k -> {
+                    final List<Integer> tweets = tweetsByUser.get(k);
+                    if (tweets == null) {
+                        return -1;
+                    }
+                    return tweets.size() - 1;
+                });
+                if (nextIndexByFollowee < 0) {
+                    followeesSnapshot.remove(j);
+                    continue;
+                }
                 Integer nextMaxTweetByThisFollowee = tweetsByUser.get(followee).get(nextIndexByFollowee);
                 if (nextMaxTweetByThisFollowee > maxTweet) {
                     maxTweet = nextMaxTweetByThisFollowee;
-                    maxTweetAuthorId = followee;
+                    maxTweetAuthor = followee;
                 }
             }
-            resultTweets.add(maxTweet);
-            positionByUser.compute(maxTweetAuthorId, (k, nextIndexByFollowee) -> nextIndexByFollowee - 1);
+            if (maxTweet > 0) {
+                resultTweets.add(maxTweet);
+                positionByUser.compute(maxTweetAuthor, (k, nextIndexByFollowee) -> {
+                    if (nextIndexByFollowee == null) {
+                        throw new IllegalStateException("Null index for " + k);
+                    }
+                    return nextIndexByFollowee - 1;
+                });
+            }
+            if (followeesSnapshot.isEmpty()) {
+                return resultTweets;
+            }
         }
         return resultTweets;
     }
