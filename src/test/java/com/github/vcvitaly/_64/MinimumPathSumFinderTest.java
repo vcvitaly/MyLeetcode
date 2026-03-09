@@ -19,4 +19,10 @@ class MinimumPathSumFinderTest {
         assertThat(finder.minPathSum(new int[][]{{1,2,3},{4,5,6}}))
                 .isEqualTo(12);
     }
+
+    @Test
+    void test3() {
+        assertThat(finder.minPathSum(new int[][]{{9,1,4,8}}))
+                .isEqualTo(22);
+    }
 }
